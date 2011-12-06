@@ -26,10 +26,12 @@
 		(tcp_str 
 	    	(comm:open-tcp-stream "localhost" 2222 :element-type 'base-char)
 		)
-		(let 
-			((res (make-array 128 :element-type 'base-char)))
-			(values (read-sequence res tcp_str) res)
-		)
+		;(let 
+		;	((res (make-array 128 :element-type 'base-char)))
+		;	(values (read-sequence res tcp_str) res)
+		;)
+		(write-sequence "Test !!! " tcp_str)
+		
 	)
 		
 	
