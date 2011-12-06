@@ -69,7 +69,7 @@ list(APPEND CPREL_LIBS ${NEEDED_CPREL_LIBS})
 ## Find Boost
 #include(FindBoost)
 #set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost 1.44 REQUIRED System Regex date_time)
+find_package(Boost 1.44 REQUIRED System Regex date_time Thread)
 message(STATUS "Boost path: ${Boost_INCLUDE_DIRS}")
 message(
 	STATUS
@@ -85,11 +85,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 ###################################################################################################
 
 #source files are in the src/ directory (recursively)
-file(
-	GLOB_RECURSE
-	source_files
-	src/*
-)
+#file(GLOB_RECURSE source_files src/*)
 
 #needed libraries to be linked
 set (requiredLibs ${GECODE_LIBS})
@@ -98,9 +94,16 @@ list(APPEND requiredLibs ${Boost_LIBRARIES})
 
 message(${requiredLibs})
 
-add_executable(gelisoexec ${source_files})
-target_link_libraries(gelisoexec ${requiredLibs})
+#add_executable(gelisoexec ${source_files})
+#target_link_libraries(gelisoexec ${requiredLibs})
 
+#test client in C++
+add_executable(testclient "src/test_client.cpp")
+target_link_libraries(testclient ${requiredLibs})
+
+#test server in C++
+add_executable(testserver "src/test_server.cpp")
+target_link_libraries(testserver ${requiredLibs})
 
 
 ##########################################################################
