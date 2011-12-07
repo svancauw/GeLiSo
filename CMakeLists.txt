@@ -85,7 +85,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 ###################################################################################################
 
 #source files are in the src/ directory (recursively)
-#file(GLOB_RECURSE source_files src/*)
+file(GLOB_RECURSE source_files src/*)
 
 #needed libraries to be linked
 set (requiredLibs ${GECODE_LIBS})
@@ -94,15 +94,15 @@ list(APPEND requiredLibs ${Boost_LIBRARIES})
 
 message(${requiredLibs})
 
-#add_executable(gelisoexec ${source_files})
-#target_link_libraries(gelisoexec ${requiredLibs})
+add_executable(gelisoexec ${source_files})
+target_link_libraries(gelisoexec ${requiredLibs})
 
 #test client in C++
-add_executable(testclient "src/test_client.cpp")
+add_executable(testclient "easytests/test_client.cpp")
 target_link_libraries(testclient ${requiredLibs})
 
 #test server in C++
-add_executable(testserver "src/test_server.cpp")
+add_executable(testserver "easytests/test_server.cpp")
 target_link_libraries(testserver ${requiredLibs})
 
 
