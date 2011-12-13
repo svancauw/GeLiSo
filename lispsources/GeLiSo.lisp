@@ -1,1 +1,0 @@
-;set of functions allowing to model and solve a problem

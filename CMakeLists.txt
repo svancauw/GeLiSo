@@ -98,12 +98,12 @@ add_executable(gelisoexec ${source_files})
 target_link_libraries(gelisoexec ${requiredLibs})
 
 #test client in C++
-add_executable(testclient "easytests/test_client.cpp")
-target_link_libraries(testclient ${requiredLibs})
+#add_executable(testclient "easytests/test_client.cpp")
+#target_link_libraries(testclient ${requiredLibs})
 
 #test server in C++
-add_executable(testserver "easytests/test_server.cpp")
-target_link_libraries(testserver ${requiredLibs})
+#add_executable(testserver "easytests/test_server.cpp")
+#target_link_libraries(testserver ${requiredLibs})
 
 
 ##########################################################################

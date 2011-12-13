@@ -1,5 +1,5 @@
-#ifndef __CHANNEL_HPP__
-#define __CHANNEL_HPP__
+#ifndef __CHANNEL_HH__
+#define __CHANNEL_HH__
 
 #include <string>
 #include <boost/asio.hpp>

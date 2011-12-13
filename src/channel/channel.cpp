@@ -36,6 +36,7 @@ namespace GeLiSo
 		//empty string
 		string returnedMessage;
 		
+		cout << "# C++ receiver # " << "Wait for a message" << endl;
 		while (1)
 		{
 			//error code for buffer reading
@@ -43,6 +44,10 @@ namespace GeLiSo
 		
 			//read the message
 			int len = socket_receive.read_some(boost::asio::buffer(buffer_receive), error);
+			
+			cout << "# C++ receiver # " << "Length by readsome : " << endl << len << endl;
+			
+			cout << "# C++ receiver # " << "the eror is : " << error.message() << len << endl;
 			
 			if (error == boost::asio::error::eof)
 			{
