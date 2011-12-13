@@ -18,7 +18,7 @@
 		;list of read character
 		(setq charList nil)
 		(print "receiveMessage function : 2")
-		(setq somethingRead nil);boolean flag to know if something has already been read
+		;(setq somethingRead nil);boolean flag to know if something has already been read
 		(setq tempChar (stream:stream-read-char-no-hang tcp_str))
 		
 		(print "receiveMessage function : 3")
@@ -26,25 +26,30 @@
 		;loop to read all characters of a given message
 		(loop while t do
 			(print "receiveMessage function : 4")
-			;check if there is something to read
+			
+			;check if the buffer is empty
 			(if (not (equal tempChar nil))
 				;then 
-				(progn 
-					(print "receiveMessage function : 5")
-					(setq charList (append charList (list tempChar)))
-					(setq somethingRead t);now we have read something so we remember it
-				)
-				;else
-				(if somethingRead
-					(progn
-						(print "receiveMessage function : 6")
-						(return);if something has been read and that we encounter nil, we return because the message has been completely read
-					)
-					(progn
-						(print "receiveMessage function : What ???")
+				(progn
+					
+					;if we have read everything, we read eof so we quit	
+					(if (equal tempChar :EOF)					;somethingRead
+						(progn
+							(print "EOF so we quit !")
+							(return)
+						)
+						(progn
+								(print "receiveMessage function : read character")
+								(print tempChar)
+								(setq charList (append charList (list tempChar)))
+								;(setq somethingRead t);now we have read something so we remember it
+						)
+
 					)
 					
 				)
+				;else
+				()
 			)
 			;read next character
 			(setq tempChar (stream:stream-read-char-no-hang tcp_str))

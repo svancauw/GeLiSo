@@ -6,7 +6,7 @@ int main()
 	using namespace std;
 	
 	//(1) create a channel
-	channel ch("127.0.0.1",2222, 3333);
+	channel ch("127.0.0.1", 2222, 3333);
 	
 	//(2) loop : receive messages, behave accordingly and answer
 	while(1)
@@ -16,7 +16,7 @@ int main()
 		ch.receive();
 		cout << "Message received ! " << endl;
 		//cout << "We received that message : " << ch.receive() << endl;
-		//ch.send("42");
+		ch.send("42");
 		
 		break;
 	}

@@ -39,9 +39,9 @@
 			
 	;wait for the answer (the uuid)
 	
-	;(print "Waiting for the answer (the uuid)")
-	;(receiveMessage (getReceiver gm))
-	;(print "Message received")
+	(print "Waiting for the answer (the uuid)")
+	(receiveMessage (getReceiver gm))
+	(print "Message received")
 	
 	;get the uuid and add an entry to the map with for which the key is a new variable and the value the uuid
 	
