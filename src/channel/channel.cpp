@@ -37,13 +37,16 @@ namespace GeLiSo
 		string returnedMessage;
 		
 		cout << "# C++ receiver # " << "Wait for a message" << endl;
-		while (1)
+		/*while (1)
 		{
 			//error code for buffer reading
 			boost::system::error_code error;
 		
+			cout << "Before readsome" << endl;
+			
 			//read the message
-			int len = socket_receive.read_some(boost::asio::buffer(buffer_receive), error);
+			//int len = socket_receive.read_some(boost::asio::buffer(buffer_receive), error);
+			int len = socket_receive.receive(boost::asio::buffer(buffer_receive), error);
 			
 			cout << "# C++ receiver # " << "Length by readsome : " << endl << len << endl;
 			
@@ -54,10 +57,15 @@ namespace GeLiSo
 				break;
 			}
 			
+			
+			
 			//add the message to the returned string
 			returnedMessage.append(buffer_receive.data(),len);
 			
-		}
+		}*/
+		
+		socket_receive.receive(boost::asio::buffer(buffer_receive));
+		returnedMessage.append(buffer_receive.data());
 		
 		cout << "# C++ receiver # " << "The following message has been received : " << endl << returnedMessage << endl;
 		

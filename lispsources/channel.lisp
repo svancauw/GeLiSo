@@ -25,7 +25,7 @@
 		
 		;loop to read all characters of a given message
 		(loop while t do
-			(print "receiveMessage function : 4")
+			;(print "receiveMessage function : 4")
 			
 			;check if the buffer is empty
 			(if (not (equal tempChar nil))
@@ -53,7 +53,7 @@
 			)
 			;read next character
 			(setq tempChar (stream:stream-read-char-no-hang tcp_str))
-			(print "receiveMessage function : 7")	
+			;(print "receiveMessage function : 7")	
 		)
 		(print "receiveMessage function : 8")
 		;we create a string message from the list of characters and return it
@@ -71,6 +71,12 @@
 (defun sendMessage (message tcp_str)
 	(print "sendMessage function : we send the following message")
 	(print message)
-	(write-sequence message tcp_str)
+	;(setq mesEOF (concatenate 'string message "\0"))
+	
+	;(write-sequence message tcp_str)
+	(write-string message tcp_str)
+	;(finish-output tcp_str)
+	(force-output tcp_str)
+	;(clear-output tcp_str)
 	(print "The message has been sent")
 )

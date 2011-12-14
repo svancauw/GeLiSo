@@ -18,6 +18,12 @@ int main()
 		//cout << "We received that message : " << ch.receive() << endl;
 		ch.send("42");
 		
+		cout << "Waiting for a message ... " << endl;
+		ch.receive();
+		cout << "Message received ! " << endl;
+		
+		ch.send("43 !!!");
+		
 		break;
 	}
 	//(3) if receive "search" message , go out of the loop
