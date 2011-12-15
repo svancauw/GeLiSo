@@ -114,41 +114,12 @@
 		(setq endpoint_receive '("127.0.0.1" 2222))
 		(setq endpoint_send '("127.0.0.1" 3333))
 		
-		;create the gecode mannager
-		(setq gm (make-instance 'GecodeManager))
+		;create the gecode manager and connect the sockets
+		(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
 		
 		(print "The Gecode Manager has been created")
+					
+		(sendMessage "newSpace" (getSender gm))
+		(receiveMessage (getReceiver gm))
 		
-		
-		
-		;connect to the C++ sockets
-		(with-open-stream 
-		(tcp_str_receive (createSocket (first endpoint_receive) (second endpoint_receive)))
-			
-			(with-open-stream 
-				(tcp_str_send (createSocket (first endpoint_send) (second endpoint_send)))
-				
-				;update the sockets in the Gecode manager
-				;(setf (getSender gm) tcp_str_send)
-				;(setf (getReceiver gm) tcp_str_receive)
-			
-				
-				(sendMessage "newSpace" (getSender gm))
-			
-			
-				
-				;(print "We create a space from Lisp")
-				;(newSpace gm)
-				;(print "The space has been created")
-				
-	
-			)
-		)
-		
-		
-		
-		
-		
-		
-	
 )

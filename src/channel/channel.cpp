@@ -23,6 +23,7 @@ namespace GeLiSo
 	void channel::send(string message)
 	{
 		cout << "# C++ sender # " << "The following message will be sent : " << endl << message << endl;
+		message.push_back(';');
 		socket_send.send(boost::asio::buffer(message));
 		cout << "# C++ sender # " << "Message sent !" << endl;
 	}
