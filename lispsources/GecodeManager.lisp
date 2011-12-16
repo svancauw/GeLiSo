@@ -8,10 +8,11 @@
 (defclass GecodeManager ()
 	;instance variables
 
+	(
 	; - variable map (a common lisp hashtable, that will contain pairs of the form <variable,uuid>)
-	((varmap :accessor getVarMap
-			 :initform (make-hash-table);we create a new hash table for the map when creating a new GeLiSo object
-	         :initarg :varmap)
+	;(varmap :accessor getVarMap
+	;		 :initform (make-hash-table);we create a new hash table for the map when creating a new GeLiSo object
+	 ;        :initarg :varmap)
 	
 	; - sending socket
 	(sender :accessor getSender
@@ -38,14 +39,11 @@
 	(print "Message sent !")
 			
 	;wait for the answer (the uuid)
-	
 	(print "Waiting for the answer (the uuid)")
-	(receiveMessage (getReceiver gm))
+	(setq newSpaceUUID (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-	;get the uuid and add an entry to the map with for which the key is a new variable and the value the uuid
-	
-	;now we return the new variable that will be usable later
-  
+  	;return the uuid to be able to access the space
+	(setq newSpaceUUID newSpaceUUID)
 )
 		

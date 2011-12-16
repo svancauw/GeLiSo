@@ -60,7 +60,7 @@
 	(print message)
 
 	;write the string on the buffer
-	(write-string message tcp_str)
+	(write-string (concatenate 'string message ";") tcp_str)
 
 	;flush the buffer data
 	(force-output tcp_str)
