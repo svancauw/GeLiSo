@@ -9,13 +9,15 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+namespace GeLiSo{
+
 //apply a given message
 //modify the variable map if a new variable has been created
 //return the ack
 std::string applyMessage(variableMap& varmap, std::string message);
 
 
-
+}
 
 
 
