@@ -6,12 +6,13 @@
 
 #include "../varmap/varmap.hh"
 #include <boost/uuid/uuid_generators.hpp>
-
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 //apply a given message
 //modify the variable map if a new variable has been created
-//return the uuid of the new variable if one has been created, NULL otherwise
-boost::uuids::uuid* applyMessage(variableMap& varmap, std::string message);
+//return the ack
+std::string applyMessage(variableMap& varmap, std::string message);
 
 
 

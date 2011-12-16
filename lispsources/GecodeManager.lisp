@@ -46,4 +46,24 @@
   	;return the uuid to be able to access the space
 	(setq newSpaceUUID newSpaceUUID)
 )
+
+;create a new Gecode space
+(defmethod beginSearch ((gm GecodeManager))
+  (print "We will begin the search")
+  
+	;(maybe later) translate the message 
+
+	;send the (translated) message
 		
+	(print "We send a message to begin the search")	
+	(sendMessage "search" (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
+)		

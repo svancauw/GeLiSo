@@ -1,7 +1,5 @@
 #include "channel/channel.hh"
 #include "translator/translator.hh"
-#include <boost/lexical_cast.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 int main()
 {
@@ -21,19 +19,19 @@ int main()
 		string newMessage = ch.receive();
 		cout << "Message received ! " << endl;
 		
-		//apply the new received message and get the new UUID
-		uuid* newUUID = applyMessage(varmap, newMessage);
+		//acknowledgment (a UUID if we create a new variable)
+		string ack = applyMessage(varmap, newMessage);
+				
+		//we send the ack
+		ch.send(ack);
 		
-		//the UUID as a string to be sent
-		string strUUID = boost::lexical_cast<std::string>(newUUID);
-		
-		ch.send(strUUID);
-		
-		//(3) if receive "search" message , go out of the loop
-		break;
+		//(3) if we received the message "beginSearch" message , go out of the loop
+		if(!strcmp(ack.c_str(), "We will begin the search"))
+			break;
 	}
 	
-
+	cout << "The model is done and now we will search ..." << endl;
+	
 	//(4) Begin search and send the results
 	
 	

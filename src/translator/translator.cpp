@@ -1,11 +1,13 @@
 #include "translator.hh"
 
+
 using namespace boost::uuids;
 using namespace std;
 
-uuid* applyMessage(variableMap& varmap, string message)
+string applyMessage(variableMap& varmap, string message)
 {
-	uuid* newUUID = NULL;
+	uuid* newUUID;
+	string ack;
 	
 	if (!strcmp(message.c_str(), "newSpace"))
 	{
@@ -15,13 +17,18 @@ uuid* applyMessage(variableMap& varmap, string message)
 		//we add the variaable and its uuid in the map
 		varmap[*newUUID] = NULL; //TODO : change for a variable pointer
 		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>(*newUUID);
 		
 	}	
 	
+	if (!strcmp(message.c_str(), "search"))
+	{
+		ack = "We will begin the search";
+	}
 	
 	
-	
-	//return the new uuid, that can be NULL if no new variable has been created
-	return newUUID;
+	//return the ack (uuid if we created a new variable)
+	return ack;
 	
 }
