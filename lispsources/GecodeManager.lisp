@@ -47,28 +47,6 @@
 	(setq newSpaceUUID newSpaceUUID)
 )
 
-;begin the search
-(defmethod beginSearch ((gm GecodeManager))
-  (print "We will begin the search")
-  
-	;(maybe later) translate the message 
-
-	;send the (translated) message
-		
-	(print "We send a message to begin the search")	
-	(sendMessage "search" (getSender gm))
-	(print "Message sent !")
-			
-	;wait for the answer
-	(print "Waiting for the answer")
-	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
-	
-  	;return the uuid to be able to access the space
-	(setq ack ack)
-)
-
-
 ;create a new Tuple
 ;componentList is a list that contains the integer component of the tuple
 (defmethod newTuple ((gm GecodeManager) componentList)
@@ -138,4 +116,60 @@
 	
   	;return the uuid to be able to access the space
 	(setq ack ack)
-)		
+)	
+
+;create a new CPRel variable with glb and lub as domain bounds
+(defmethod newCPRelVar ((gm GecodeManager) sp glb lub)
+	
+	;send the message
+	(print "We send a message for a new ground relation")	
+	(sendMessage (concatenate 'string "newCPRelVar" " " sp " " glb " " lub) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
+)
+
+(defmethod branch ((gm GecodeManager) sp cprelvar)
+	
+	;send the message
+	(print "We send a message for a new ground relation")	
+	(sendMessage (concatenate 'string "branch" " " sp " " cprelvar) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
+)	
+
+;begin the search
+;strategyID is an id used to identify the strategy to be used in Gecode 
+;0 = dfs
+;1 = bab
+;2 = restart
+(defmethod doSearch ((gm GecodeManager) sp strategyID)
+  (print "We will begin the search")
+
+	;send the (translated) message
+		
+	(print "We send a message to begin the search")	
+	(sendMessage (concatenate 'string "search" " " sp " " (write-to-string strategyID)) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
+)

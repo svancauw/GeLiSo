@@ -25,14 +25,10 @@ int main()
 		//we send the ack
 		ch.send(ack);
 		
-		//(3) if we received the message "beginSearch" message , go out of the loop
-		if(!strcmp(ack.c_str(), "We will begin the search"))
+		//(3) if we received the message "beginSearch" message , begin the search
+		if(!strcmp(ack.c_str(), "Search done"))
 			break;
 	}
-	
-	cout << "The model is done and now we will search ..." << endl;
-	
-	//(4) Begin search and send the results
 	
 	
 	return 0;

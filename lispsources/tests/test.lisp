@@ -226,3 +226,61 @@
 		(beginSearch gm)
 		
 )
+
+(defun test8 ()
+		(setq endpoint_receive '("127.0.0.1" 2222))
+		(setq endpoint_send '("127.0.0.1" 3333))
+		
+		;create the gecode manager and connect the sockets
+		(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
+		
+		(print "The Gecode Manager has been created")
+					
+		(setq sp (newSpace gm))
+		
+		(print "The space uuid is :")
+		(print sp)
+		
+		;(setq tu (newTuple gm '(1 2)))
+		(setq tu (newTuple gm '(1 2 3 4 5)))
+		
+		(setq glb (newGRelation gm 5))
+		(setq lub (newGRelation gm 5))
+		
+		(GRelation-AddTuple gm lub tu)
+		
+		(setq var1 (newCPRelVar gm sp glb lub))
+		
+		(beginSearch gm)
+		
+)
+
+(defun test9 ()
+		(setq endpoint_receive '("127.0.0.1" 2222))
+		(setq endpoint_send '("127.0.0.1" 3333))
+		
+		;create the gecode manager and connect the sockets
+		(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
+		
+		(print "The Gecode Manager has been created")
+					
+		(setq sp (newSpace gm))
+		
+		(print "The space uuid is :")
+		(print sp)
+		
+		;(setq tu (newTuple gm '(1 2)))
+		(setq tu (newTuple gm '(1 2 3 4 5)))
+		
+		(setq glb (newGRelation gm 5))
+		(setq lub (newGRelation gm 5))
+		
+		(GRelation-AddTuple gm lub tu)
+		
+		(setq var1 (newCPRelVar gm sp glb lub))
+		
+		(branch gm sp var1)
+		
+		(doSearch gm sp 0)
+		
+)

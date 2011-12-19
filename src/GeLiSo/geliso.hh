@@ -45,7 +45,7 @@ namespace GeLiSo
 		
 	};
 
-	/***********************************************CPCLCPRelVar class****************************************/		
+	/***********************************************GeLiSoCPRelVar class****************************************/		
 	class GeLiSoCPRelVar: public MPG::CPRelVar
 	{
 	private:
@@ -59,9 +59,9 @@ namespace GeLiSo
 		void setVectorIndex(int newIndex);	
 	};
 	
-	/***********************************************CPCLEngine class****************************************/		
+	/***********************************************GeLiSoEngine class****************************************/		
 	
-    /*class CPCLEngine
+    class GeLiSoEngine
  	{
 	private:
 		/// The actual search engine
@@ -69,16 +69,16 @@ namespace GeLiSo
     public:
       	// Constructor
 		//strategyID is used to choose between the different strategies provided by Gecode
-		CPCLEngine(CPCLSpace* sp, int strategyID, const Gecode::Search::Options& o=Gecode::Search::Options::def);
+		GeLiSoEngine(GeLiSoSpace* sp, int strategyID, const Gecode::Search::Options& o=Gecode::Search::Options::def);
 		//next function (behaviour depend on the chosen strategy)
-		CPCLSpace* next(void);
+		GeLiSoSpace* next(void);
 		/// Return statistics
 	    Gecode::Search::Statistics statistics(void) const;
 	    /// Check whether engine has been stopped
 	    bool stopped(void) const;
 	    /// Destructor
-	    ~CPCLEngine(void);
-    };*/
+	    ~GeLiSoEngine(void);
+    };
 	
 }
 

@@ -120,9 +120,106 @@ string applyMessage(variableMap& varmap, string message)
 		
 	}	
 	
+	if (!strcmp(functionToApply, "newCPRelVar"))
+	{
+		//string streams used to get the uuids
+		stringstream sssp;
+		stringstream ssglb;
+		stringstream sslub;
+		
+		//we create the new uuid for the new variable
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
+		
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+		//get the glb (second parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid glbUUID;
+		ssglb << messageTokens;
+		ssglb >> glbUUID;
+		GRelation* glb = (GRelation*) varmap[glbUUID];
+		
+		//get the lub (third parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid lubUUID;
+		sslub << messageTokens;
+		sslub >> lubUUID;
+		GRelation* lub = (GRelation*) varmap[lubUUID];
+		
+		//we create the new (empty) GRelation
+		GeLiSoCPRelVar& newCPRelVar = sp->newCPRelVar(*glb,*lub);
+		
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = &newCPRelVar;
+		
+		cout << newCPRelVar << endl;
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>(*newUUID);
+		
+	}
+	
+	if (!strcmp(functionToApply, "branch"))
+	{
+		//string streams used to get the uuids
+		stringstream sssp;
+		stringstream sscprelvar;
+		
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+		//get the cprelvar (second parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		boost::uuids::uuid cprelvarUUID;
+		sscprelvar << messageTokens;
+		sscprelvar >> cprelvarUUID;
+		GeLiSoCPRelVar* cprelvar = (GeLiSoCPRelVar*) varmap[cprelvarUUID];
+		
+		//branch the variable
+		branch(*sp,*cprelvar);
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>("The variable has been branched");
+		
+	}
+	
 	if (!strcmp(functionToApply, "search"))
 	{
-		ack = "We will begin the search";
+		
+		//string stream used to get the uuid
+		stringstream sssp;
+		
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+		//get the strategyID (second parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		int strategyID = (int) strtol(messageTokens,NULL,10);
+		
+		
+		//the search engine
+		GeLiSoEngine engine(GeLiSoEngine(sp, strategyID));
+		//the solution space
+		GeLiSoSpace* sol;
+		
+		sol = engine.next();
+		
+		sol->print();
+		
+		ack = "Search done";
 	}
 	
 	

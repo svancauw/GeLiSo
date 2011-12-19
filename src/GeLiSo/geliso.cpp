@@ -114,7 +114,7 @@ namespace GeLiSo
 /***********************************************CPCLEngine class****************************************/		
 
 	// Constructor
-	/*CPCLEngine::CPCLEngine(CPCLSpace* sp, int strategyID, const Search::Options& o)
+	GeLiSoEngine::GeLiSoEngine(GeLiSoSpace* sp, int strategyID, const Search::Options& o)
 	{
 		using namespace Search;
 		switch (strategyID)
@@ -123,47 +123,47 @@ namespace GeLiSo
 		     case 0: 
 			{
 		          	cout << "Engine with DFS strategy constructed" << endl;
-					e = dfs(sp,sizeof(CPCLSpace),o);
+					e = dfs(sp,sizeof(GeLiSoSpace),o);
 		          	break;
 		    }
 			//bab strategy
 		    case 1:
 		   {
 		          cout << "Engine with BAB strategy constructed" << endl;
-				  e = bab(sp,sizeof(CPCLSpace),o);
+				  e = bab(sp,sizeof(GeLiSoSpace),o);
 		          break;
 		    }
 			//restart strategy
 		    case 2:
 		   {
 		          cout << "Engine with Restart strategy constructed" << endl;
-				  e = restart(sp,sizeof(CPCLSpace),o);
+				  e = restart(sp,sizeof(GeLiSoSpace),o);
 		
 		    }
 		}
 	}
 	
 	//next function (behaviour depend on the chosen strategy)
-	CPCLSpace* CPCLEngine::next(void)
+	GeLiSoSpace* GeLiSoEngine::next(void)
 	{
-		return dynamic_cast<CPCLSpace*>(e->next());
+		return dynamic_cast<GeLiSoSpace*>(e->next());
 	}
 	
 	/// Return statistics
-    Search::Statistics CPCLEngine::statistics(void) const
+    Search::Statistics GeLiSoEngine::statistics(void) const
 		{
 			return e->statistics();
 		}
     /// Check whether engine has been stopped
-    bool CPCLEngine::stopped(void) const
+    bool GeLiSoEngine::stopped(void) const
 		{
 			return e->stopped();
 		}
     /// Destructor
-    CPCLEngine::~CPCLEngine(void)
+    GeLiSoEngine::~GeLiSoEngine(void)
 		{
 			delete e;
-		}*/
+		}
 
 
 /******************************************************************************************************/
