@@ -119,4 +119,23 @@
 	
   	;return the uuid to be able to access the space
 	(setq ack ack)
+)
+
+;add the tuple tu to the ground relation gr
+;gr and tu are strings representing the uuid of the objects on the C++ side
+(defmethod GRelation-AddTuple ((gm GecodeManager) gr tu)
+	
+	;send the message
+		
+	(print "We send a message for a new ground relation")	
+	(sendMessage (concatenate 'string "GRelation-AddTuple" " " gr " " tu) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
 )		

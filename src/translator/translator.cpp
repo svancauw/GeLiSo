@@ -17,7 +17,7 @@ string applyMessage(variableMap& varmap, string message)
 	uuid* newUUID;
 	string ack;
 	
-	//token of the message
+	//token of the message (used to get different parameters)
 	char* messageTokens = strtok(const_cast<char *>(message.c_str())," ");
 	
 	//The first token of the message must be the name of the function to apply
@@ -88,6 +88,35 @@ string applyMessage(variableMap& varmap, string message)
 		
 		//the UUID as a string is the ack
 		ack = boost::lexical_cast<std::string>(*newUUID);
+		
+	}
+	
+	//add a tuple to a ground relation
+	if (!strcmp(functionToApply, "GRelation-AddTuple"))
+	{
+		//string streams used to get the uuids
+		stringstream ssgr;
+		stringstream sstu;
+		
+		//get the ground relation (first parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		boost::uuids::uuid grUUID;
+		ssgr << messageTokens;
+		ssgr >> grUUID;
+		GRelation* gr = (GRelation*) varmap[grUUID];
+		
+		//get the tuple (second parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		boost::uuids::uuid tuUUID;
+		sstu << messageTokens;
+		sstu >> tuUUID;
+		Tuple* tu = (Tuple*) varmap[tuUUID];
+		
+		//add the tuple
+		gr->add(*tu);
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>("The tuple has been added to the ground relation");
 		
 	}	
 	

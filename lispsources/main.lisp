@@ -15,7 +15,7 @@
 	
 	(load "tests/test.lisp")
 	
-	(test6)
+	(test7)
 
 )	
 	
