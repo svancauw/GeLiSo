@@ -47,7 +47,7 @@
 	(setq newSpaceUUID newSpaceUUID)
 )
 
-;create a new Gecode space
+;begin the search
 (defmethod beginSearch ((gm GecodeManager))
   (print "We will begin the search")
   
@@ -57,6 +57,40 @@
 		
 	(print "We send a message to begin the search")	
 	(sendMessage "search" (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
+)
+
+
+;create a new Tuple
+;componentList is a list that contains the integer component of the tuple
+(defmethod newTuple ((gm GecodeManager) componentList)
+
+	;list of integer component as a string
+	(setq componentString (write-to-string (first componentList))) ;first element is put into
+		
+	;fill the string with all the components
+	(setq componentList (rest componentList))	
+	(loop while (first componentList) do ;while the list is not empty
+		
+		;we add the next component
+		(setq componentString (concatenate 'string componentString " " (write-to-string (first componentList))))
+		
+		;next element	
+		(setq componentList (rest componentList))
+	)
+	
+	;send the message
+		
+	(print "We send a message for a new tuple")	
+	(sendMessage (concatenate 'string "newTuple" " " componentString) (getSender gm))
 	(print "Message sent !")
 			
 	;wait for the answer

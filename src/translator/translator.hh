@@ -16,7 +16,6 @@ namespace GeLiSo{
 //return the ack
 std::string applyMessage(variableMap& varmap, std::string message);
 
-
 }
 
 
