@@ -101,3 +101,22 @@
   	;return the uuid to be able to access the space
 	(setq ack ack)
 )		
+
+;create a new (empty) ground relation
+;arity is an integer specifying the arity of the new (empty) ground relation
+(defmethod newGRelation ((gm GecodeManager) arity)
+	
+	;send the message
+		
+	(print "We send a message for a new ground relation")	
+	(sendMessage (concatenate 'string "newGRelation" " " (write-to-string arity)) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the uuid to be able to access the space
+	(setq ack ack)
+)		

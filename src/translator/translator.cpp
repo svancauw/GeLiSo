@@ -72,7 +72,24 @@ string applyMessage(variableMap& varmap, string message)
 		
 	}
 	
+	if (!strcmp(functionToApply, "newGRelation"))
+	{
+		//we create the new uuid for the new variable
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
 		
+		//get the arity of the new ground relation
+		messageTokens = strtok (NULL, " ");
+		
+		//we create the new (empty) GRelation
+		GRelation* newGRelation = new GRelation(strtol(messageTokens,NULL,10));
+		
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = newGRelation;
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>(*newUUID);
+		
+	}	
 	
 	if (!strcmp(functionToApply, "search"))
 	{
