@@ -9,6 +9,16 @@ using namespace boost::uuids;
 using namespace std;
 
 using namespace MPG;
+
+
+//global variable used in the visitor
+stringstream globalvisitorstream;
+
+//function used as a functor to the visit function
+void visitor(const vector<int>& tuple)
+{
+	globalvisitorstream << tuple ; 
+}
 	
 	
 string applyMessage(variableMap& varmap, string message)
@@ -151,7 +161,7 @@ string applyMessage(variableMap& varmap, string message)
 		sslub >> lubUUID;
 		GRelation* lub = (GRelation*) varmap[lubUUID];
 		
-		//we create the new (empty) GRelation
+		//we create the new CPRelVar
 		GeLiSoCPRelVar& newCPRelVar = sp->newCPRelVar(*glb,*lub);
 		
 		//we add the variable and its uuid in the map
@@ -187,16 +197,18 @@ string applyMessage(variableMap& varmap, string message)
 		//branch the variable
 		branch(*sp,*cprelvar);
 		
-		//the UUID as a string is the ack
 		ack = boost::lexical_cast<std::string>("The variable has been branched");
 		
 	}
 	
-	if (!strcmp(functionToApply, "search"))
+	if (!strcmp(functionToApply, "newSearchEngine"))
 	{
 		
 		//string stream used to get the uuid
 		stringstream sssp;
+		
+		//we create the new uuid for the new variable
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
 		
 		//get the space (first parameter)
 		messageTokens = strtok (NULL, " ");		
@@ -211,15 +223,105 @@ string applyMessage(variableMap& varmap, string message)
 		
 		
 		//the search engine
-		GeLiSoEngine engine(GeLiSoEngine(sp, strategyID));
+		GeLiSoEngine* engine = new GeLiSoEngine(sp, strategyID);
+		
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = engine;
+		
+		//UUID of the search engine
+		ack = boost::lexical_cast<std::string>(*newUUID);
+	}
+	
+	if (!strcmp(functionToApply, "nextSolution"))
+	{
+		
+		//string stream used to get the uuid
+		stringstream sssp;
+		stringstream ssse;
+		
+		//we create the new uuid for the new variable
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
+		
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+		//get the search engine (second parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid seUUID;
+		ssse << messageTokens;
+		ssse >> spUUID;
+		GeLiSoEngine* se = (GeLiSoEngine*) varmap[spUUID];
+		
 		//the solution space
 		GeLiSoSpace* sol;
 		
-		sol = engine.next();
+		sol = se->next();
 		
 		sol->print();
 		
-		ack = "Search done";
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = sol;
+		
+		//UUID of the search engine
+		ack = boost::lexical_cast<std::string>(*newUUID);
+	}
+	
+	if (!strcmp(functionToApply, "quitGecode"))
+	{
+		//TODO : free all the memory here
+		
+		//the ack will be used to quit the main loop
+		ack = "Quit";
+	}
+	
+	if (!strcmp(functionToApply, "getVarInSpace"))
+	{
+		//string streams used to get the uuids
+		stringstream sssp;
+		stringstream sscprelvar;
+		
+		//we create the new uuid for the new variable
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
+		
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+		//get the cprelvar of the model space (second parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid cprelvarUUID;
+		sscprelvar << messageTokens;
+		sscprelvar >> cprelvarUUID;
+		GeLiSoCPRelVar* cprelvar = (GeLiSoCPRelVar*) varmap[cprelvarUUID];
+				
+		//get the cprelvar of the space sp
+		GeLiSoCPRelVar& solcprelvar = sp->getGeLiSoCPRelVar(cprelvar->getVectorIndex());
+		
+		//get the glb (the ground relation, equal to lub in a solution space)
+		GRelation solgr = solcprelvar.glb();
+		
+		//get a vector of vector representing the ground relation
+		cout << "STREAM : " << globalvisitorstream.str() << endl;
+		
+		
+		globalvisitorstream.str("");//empty the global stream
+		cout << "STREAM : " << globalvisitorstream.str() << endl;
+		globalvisitorstream << "(" ; // open the parenthesis
+		cout << "STREAM : " << globalvisitorstream << endl;
+		solgr.visit(&visitor);
+		globalvisitorstream << ")" ;//close the parenthesis
+		
+		globalvisitorstream >> ack;
+		
+		
+		
 	}
 	
 	
@@ -227,6 +329,5 @@ string applyMessage(variableMap& varmap, string message)
 	return ack;
 	
 }
-
 
 }

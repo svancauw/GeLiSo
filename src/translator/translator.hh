@@ -11,6 +11,9 @@
 #include <sstream>
 
 namespace GeLiSo{
+	
+
+	
 
 //apply a given message
 //modify the variable map if a new variable has been created

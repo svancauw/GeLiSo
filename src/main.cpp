@@ -26,7 +26,7 @@ int main()
 		ch.send(ack);
 		
 		//(3) if we received the message "beginSearch" message , begin the search
-		if(!strcmp(ack.c_str(), "Search done"))
+		if(!strcmp(ack.c_str(), "Quit"))
 			break;
 	}
 	

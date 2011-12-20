@@ -42,6 +42,10 @@ namespace GeLiSo
 		//create a new CPRelVar and add it to the vector
 		GeLiSoCPRelVar&
 	    newCPRelVar(const MPG::GRelation& l, const MPG::GRelation& u);
+	
+		//get the CPRelVar at a given index in rv
+		GeLiSoCPRelVar&
+	    getGeLiSoCPRelVar(int index);
 		
 	};
 

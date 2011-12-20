@@ -4,8 +4,10 @@
 
 (defun main ()
 	
-	;launch the C++ server
-	;(system:call-system "/Users/saschavancauwelaert/Documents/EPL/PhD/code/GeLiSo_interface/build/bin/gelisoexec" :wait t)
+	;launch the C++ ser	ver (don't work well)
+	;(system:run-shell-command "/Users/saschavancauwelaert/Documents/EPL/PhD/code/GeLiSo_interface/build/bin/gelisoexec")
+	;(sleep 5)
+	;(print "Now we begin")
 	
 	;go in the source directory
 	(change-directory "/Users/saschavancauwelaert/Documents/EPL/PhD/code/GeLiSo_interface/GeLiSo/lispsources/")
@@ -18,11 +20,6 @@
 	
 	(load "tests/test.lisp")
 	
-	(test9)
+	(test10)
 
-)	
-	
-
-
-
-		
+)

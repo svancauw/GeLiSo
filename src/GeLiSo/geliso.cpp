@@ -70,23 +70,18 @@ namespace GeLiSo
 	GeLiSoCPRelVar&
 	GeLiSoSpace::newCPRelVar(const MPG::GRelation& l, const MPG::GRelation& u)
 	{
-		/*cout << "A new var will be created and added to the space" << endl;
-		cerr << "A new var will be created and added to the space" << endl;
-		cout << "Here is rv.size() : " << rv.size() << endl;
-		cerr << "Here is rv.size() : " << rv.size() << endl;*/
+		
 		GeLiSoCPRelVar* newVar = new GeLiSoCPRelVar(*this,l,u);
-		/*cout << "new var created : " << rv.size() << endl;
-		cerr << "new var created : " << rv.size() << endl;*/
 		rv.push_back(*newVar);
-		/*cout << "new var added : " << rv.size() << endl;
-		cerr << "new var added : " << rv.size() << endl;
-		cout << "Here is rv.size() : " << rv.size() << endl;
-		cerr << "Here is rv.size() : " << rv.size() << endl;*/
         rv.back().setVectorIndex(rv.size() - 1);
-		//cout << "index set" << rv.back().getVectorIndex() << "=?" << newVar.getVectorIndex() << endl;
-		/*std::cerr << "Glb of new CPRelVar : " << rv.back().glb().arity() << std::endl;
-		std::cerr << "Lub of new CPRelVar : " << rv.back().lub().arity() << std::endl;*/
         return rv.back();
+	}
+	
+	//get the CPRelVar at a given index in rv
+	GeLiSoCPRelVar&
+    GeLiSoSpace::getGeLiSoCPRelVar(int index)
+	{
+		return rv[index];
 	}
 	
 	

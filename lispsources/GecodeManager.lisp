@@ -76,7 +76,7 @@
 	(setq ack (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-  	;return the uuid to be able to access the space
+  	;return the uuid to be able to access the tuple
 	(setq ack ack)
 )		
 
@@ -95,7 +95,7 @@
 	(setq ack (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-  	;return the uuid to be able to access the space
+  	;return the uuid to be able to access the ground relation
 	(setq ack ack)
 )
 
@@ -114,7 +114,7 @@
 	(setq ack (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-  	;return the uuid to be able to access the space
+  	;return the ack
 	(setq ack ack)
 )	
 
@@ -131,7 +131,7 @@
 	(setq ack (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-  	;return the uuid to be able to access the space
+  	;return the uuid to be able to access the cprelvar
 	(setq ack ack)
 )
 
@@ -147,22 +147,21 @@
 	(setq ack (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-  	;return the uuid to be able to access the space
+  	;return the ack
 	(setq ack ack)
 )	
 
-;begin the search
+;create a search engine
 ;strategyID is an id used to identify the strategy to be used in Gecode 
 ;0 = dfs
 ;1 = bab
 ;2 = restart
-(defmethod doSearch ((gm GecodeManager) sp strategyID)
-  (print "We will begin the search")
+(defmethod newSearchEngine ((gm GecodeManager) sp strategyID)
 
 	;send the (translated) message
 		
-	(print "We send a message to begin the search")	
-	(sendMessage (concatenate 'string "search" " " sp " " (write-to-string strategyID)) (getSender gm))
+	(print "We send a message to create a search engine")	
+	(sendMessage (concatenate 'string "newSearchEngine" " " sp " " (write-to-string strategyID)) (getSender gm))
 	(print "Message sent !")
 			
 	;wait for the answer
@@ -170,6 +169,60 @@
 	(setq ack (receiveMessage (getReceiver gm)))
 	(print "Message received")
 	
-  	;return the uuid to be able to access the space
+  	;return the ack (actual solution)
+	(setq ack ack)
+)
+
+;find the next solution for a given space sp and search engine se
+;it returns a solution space
+(defmethod nextSolution ((gm GecodeManager) sp se)
+
+	;send the (translated) message
+		
+	(print "We send a message to create a search engine")	
+	(sendMessage (concatenate 'string "nextSolution" " " sp " " se) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the ack (actual solution)
+	(setq ack ack)
+)
+
+(defmethod quitGecode ((gm GecodeManager))
+
+	;send the (translated) message
+		
+	(print "We will quit")	
+	(sendMessage "quitGecode" (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the ack (actual solution)
+	(setq ack ack)
+)
+
+;get a relation variable on a given space (for instance solution space) as a list of list (ie a list of tuples)
+(defmethod getVarInSpace ((gm GecodeManager) sp cprelvar)
+
+	;send the (translated) message
+		
+	(print "Get a relation variable as a list of list")	
+	(sendMessage (concatenate 'string "getVarInSpace" " " sp " " cprelvar) (getSender gm))
+	(print "Message sent !")
+			
+	;wait for the answer (the actual list of list but as a string)
+	(print "Waiting for the answer")
+	(setq ack (receiveMessage (getReceiver gm)))
+	(print "Message received")
+	
+  	;return the ack (actual solution)
 	(setq ack ack)
 )
