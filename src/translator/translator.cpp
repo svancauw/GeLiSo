@@ -320,6 +320,395 @@ string applyMessage(variableMap& varmap, string message)
 		
 	}
 	
+	if (!strcmp(functionToApply, "Constraint"))
+	{
+		//get the constraint name
+		messageTokens = strtok (NULL, " ");
+		char* constr = messageTokens;
+		
+		//string streams used to get the uuids
+		stringstream sssp;
+		stringstream ssrelA;
+		stringstream ssrelB;
+		stringstream ssrelC;
+		stringstream ssgr;
+		
+		//UUIDs
+		boost::uuids::uuid spUUID;
+		boost::uuids::uuid relAUUID;
+		boost::uuids::uuid relBUUID;
+		boost::uuids::uuid relCUUID;
+		boost::uuids::uuid grUUID;
+		
+		if (!strcmp(constr, "equal"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			equal(*sp,*relA,*relB);
+			
+		}
+		
+		if (!strcmp(constr, "complement"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			complement(*sp,*relA,*relB);
+			
+		}
+		
+		if (!strcmp(constr, "intersect"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			intersect(*sp,*relA,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "union"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			Union(*sp,*relA,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "subset"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			subset(*sp,*relA,*relB);
+			
+		}
+		
+		if (!strcmp(constr, "disjoint"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			disjoint(*sp,*relA,*relB);
+			
+		}
+		
+		if (!strcmp(constr, "implies"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			implies(*sp,*relA,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "projection"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the integer (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			int p = strtol(messageTokens,NULL,10);
+			
+			//get the relA (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			projection(*sp,p,*relA,*relB);
+			
+		}
+		
+		if (!strcmp(constr, "join"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the integer (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			int j = strtol(messageTokens,NULL,10);
+			
+			//get the relB (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fifth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			join(*sp,*relA,j,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "follow"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the integer (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			int f = strtol(messageTokens,NULL,10);
+			
+			//get the relB (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fifth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			follow(*sp,*relA,f,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "divide"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the integer (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			int d = strtol(messageTokens,NULL,10);
+			
+			//get the relB (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fifth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			divide(*sp,*relA,d,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "include"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the gr (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssgr << messageTokens;
+			ssgr >> grUUID;
+			GRelation* gr = (GRelation*) varmap[grUUID];
+			
+			include(*sp,*relA,*gr);
+			
+		}
+		
+		if (!strcmp(constr, "exclude"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the gr (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssgr << messageTokens;
+			ssgr >> grUUID;
+			GRelation* gr = (GRelation*) varmap[grUUID];
+			
+			exclude(*sp,*relA,*gr);
+			
+		}
+		
+		ack = boost::lexical_cast<std::string>("Constraint posted");
+		
+	}
+	
+	
 	
 	//return the ack (uuid if we created a new variable)
 	return ack;

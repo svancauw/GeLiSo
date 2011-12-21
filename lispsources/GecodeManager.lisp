@@ -28,7 +28,6 @@
 
 ;create a new Gecode space
 (defmethod newSpace ((gm GecodeManager))
-  (print "We create a new Gecode space")
   
 	;(maybe later) translate the message 
 
@@ -184,8 +183,9 @@
 	;wait for the answer (the actual list of list but as a string)
 	(setq ack (receiveMessage (getReceiver gm)))
 	
+	
+	
 	;transform the string in a list of list (actually a list of tuple, ie the relation)
-	(print (concatenate 'string "The relation as a string is : " ack))
 	
 	(setq splittedRel (split-sequence "-" ack :coalesce-separators t))
 	
@@ -216,6 +216,162 @@
 	)
 	
   	;return the relation as list of list
-	(print relAsList)
 	(setq relAsList relAsList)
+)
+
+
+(defmethod equalConstraint ((gm GecodeManager) sp relA relB)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint equal" " " sp " " relA " " relB) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod complementConstraint ((gm GecodeManager) sp relA relB)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint complement" " " sp " " relA " " relB) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod intersectConstraint ((gm GecodeManager) sp relA relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint intersect" " " sp " " relA " " relB " " relC) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod unionConstraint ((gm GecodeManager) sp relA relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint union" " " sp " " relA " " relB " " relC) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod subsetConstraint ((gm GecodeManager) sp relA relB)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint subset" " " sp " " relA " " relB) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod disjointConstraint ((gm GecodeManager) sp relA relB)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint disjoint" " " sp " " relA " " relB) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod impliesConstraint ((gm GecodeManager) sp relA relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint implies" " " sp " " relA " " relB " " relC) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod projectionConstraint ((gm GecodeManager) sp p relA relB)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) relA relB) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod joinConstraint ((gm GecodeManager) sp relA j relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint join" " " sp " " relA " " (write-to-string j) " " relB " " relC) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod followConstraint ((gm GecodeManager) sp relA f relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod divideConstraint ((gm GecodeManager) sp relA d relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint divide" " " sp " " relA " " (write-to-string d) " " relB " " relC) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod includeConstraint ((gm GecodeManager) sp relA gr)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint include" " " sp " " relA " " gr) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod excludeConstraint ((gm GecodeManager) sp relA gr)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint exclude" " " sp " " relA " " gr) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
 )

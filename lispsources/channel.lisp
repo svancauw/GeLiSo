@@ -28,7 +28,6 @@
 					;if we have read everything
 					(if (equal tempChar #\;)
 						(progn
-							(print "Message completely read")
 							(return)
 						)
 						(progn
