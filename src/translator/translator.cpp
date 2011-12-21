@@ -10,14 +10,13 @@ using namespace std;
 
 using namespace MPG;
 
-
 //global variable used in the visitor
-stringstream globalvisitorstream;
+stringstream globalvisitorstream("");
 
 //function used as a functor to the visit function
 void visitor(const vector<int>& tuple)
 {
-	globalvisitorstream << tuple ; 
+	globalvisitorstream << tuple << "-"; 
 }
 	
 	
@@ -308,15 +307,12 @@ string applyMessage(variableMap& varmap, string message)
 		GRelation solgr = solcprelvar.glb();
 		
 		//get a vector of vector representing the ground relation
-		cout << "STREAM : " << globalvisitorstream.str() << endl;
+		//empty the global stream
+		globalvisitorstream.clear();
+		globalvisitorstream.str("");
 		
-		
-		globalvisitorstream.str("");//empty the global stream
-		cout << "STREAM : " << globalvisitorstream.str() << endl;
-		globalvisitorstream << "(" ; // open the parenthesis
-		cout << "STREAM : " << globalvisitorstream << endl;
+		//add all the tuple of the ground relation
 		solgr.visit(&visitor);
-		globalvisitorstream << ")" ;//close the parenthesis
 		
 		globalvisitorstream >> ack;
 		

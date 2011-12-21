@@ -34,14 +34,10 @@
 
 	;send the (translated) message
 		
-	(print "We send a message for a new space")	
 	(sendMessage "newSpace" (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer (the uuid)
-	(print "Waiting for the answer (the uuid)")
 	(setq newSpaceUUID (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the uuid to be able to access the space
 	(setq newSpaceUUID newSpaceUUID)
@@ -67,14 +63,10 @@
 	
 	;send the message
 		
-	(print "We send a message for a new tuple")	
 	(sendMessage (concatenate 'string "newTuple" " " componentString) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the uuid to be able to access the tuple
 	(setq ack ack)
@@ -86,14 +78,10 @@
 	
 	;send the message
 		
-	(print "We send a message for a new ground relation")	
 	(sendMessage (concatenate 'string "newGRelation" " " (write-to-string arity)) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the uuid to be able to access the ground relation
 	(setq ack ack)
@@ -105,14 +93,10 @@
 	
 	;send the message
 		
-	(print "We send a message for a new ground relation")	
 	(sendMessage (concatenate 'string "GRelation-AddTuple" " " gr " " tu) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the ack
 	(setq ack ack)
@@ -121,15 +105,11 @@
 ;create a new CPRel variable with glb and lub as domain bounds
 (defmethod newCPRelVar ((gm GecodeManager) sp glb lub)
 	
-	;send the message
-	(print "We send a message for a new ground relation")	
+	;send the message	
 	(sendMessage (concatenate 'string "newCPRelVar" " " sp " " glb " " lub) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the uuid to be able to access the cprelvar
 	(setq ack ack)
@@ -137,15 +117,11 @@
 
 (defmethod branch ((gm GecodeManager) sp cprelvar)
 	
-	;send the message
-	(print "We send a message for a new ground relation")	
+	;send the message	
 	(sendMessage (concatenate 'string "branch" " " sp " " cprelvar) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the ack
 	(setq ack ack)
@@ -159,15 +135,11 @@
 (defmethod newSearchEngine ((gm GecodeManager) sp strategyID)
 
 	;send the (translated) message
-		
-	(print "We send a message to create a search engine")	
+			
 	(sendMessage (concatenate 'string "newSearchEngine" " " sp " " (write-to-string strategyID)) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the ack (actual solution)
 	(setq ack ack)
@@ -179,14 +151,10 @@
 
 	;send the (translated) message
 		
-	(print "We send a message to create a search engine")	
 	(sendMessage (concatenate 'string "nextSolution" " " sp " " se) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the ack (actual solution)
 	(setq ack ack)
@@ -198,12 +166,9 @@
 		
 	(print "We will quit")	
 	(sendMessage "quitGecode" (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
   	;return the ack (actual solution)
 	(setq ack ack)
@@ -214,15 +179,43 @@
 
 	;send the (translated) message
 		
-	(print "Get a relation variable as a list of list")	
 	(sendMessage (concatenate 'string "getVarInSpace" " " sp " " cprelvar) (getSender gm))
-	(print "Message sent !")
 			
 	;wait for the answer (the actual list of list but as a string)
-	(print "Waiting for the answer")
 	(setq ack (receiveMessage (getReceiver gm)))
-	(print "Message received")
 	
-  	;return the ack (actual solution)
-	(setq ack ack)
+	;transform the string in a list of list (actually a list of tuple, ie the relation)
+	(print (concatenate 'string "The relation as a string is : " ack))
+	
+	(setq splittedRel (split-sequence "-" ack :coalesce-separators t))
+	
+	(setq relAsList nil);list of list to be returned
+	
+	(loop while (first splittedRel) do ;while the list is not empty
+		
+		(setq tempTuple nil);the current tuple
+		
+		;tuple splitted as a list of integer
+		(setq splittedTuple (split-sequence "[,]" (first splittedRel) :coalesce-separators t))
+		
+		;fill the list with the element of the list of string		
+		(loop while (first splittedTuple) do
+			
+			;we add the next element
+			(setq tempTuple (append (list (parse-integer (first splittedTuple))) tempTuple))
+			
+			;next element	
+			(setq splittedTuple (rest splittedTuple))
+		)	
+		
+		;we add the next tuple
+		(setq relAsList (append (list tempTuple) relAsList))
+		
+		;next element	
+		(setq splittedRel (rest splittedRel))
+	)
+	
+  	;return the relation as list of list
+	(print relAsList)
+	(setq relAsList relAsList)
 )

@@ -46,7 +46,6 @@
 		)
 		;we create a string message from the list of characters and return it
 		(setq messageToReturn (coerce (coerce charList 'vector) 'string))
-		(print messageToReturn)
 
 )
 
@@ -56,14 +55,11 @@
 
 (defun sendMessage (message tcp_str)
 
-	(print "sendMessage function : we send the following message : ")
-	(print message)
-
+	
 	;write the string on the buffer
 	(write-string (concatenate 'string message ";") tcp_str)
 
 	;flush the buffer data
 	(force-output tcp_str)
 	
-	(print "The message has been sent")
 )

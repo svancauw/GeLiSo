@@ -12,8 +12,8 @@
 
 namespace GeLiSo{
 	
-
-	
+//function used as a functor to the visit function
+void visitor(const std::vector<int>& tuple);
 
 //apply a given message
 //modify the variable map if a new variable has been created
