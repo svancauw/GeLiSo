@@ -33,7 +33,8 @@ namespace GeLiSo
 		//copy method
 		virtual Space* copy(bool share);
 		
-		//print method
+		//print methods
+		void print(std::ostream& os) const;
 		void print(void) const;
 		
 		//get vector size

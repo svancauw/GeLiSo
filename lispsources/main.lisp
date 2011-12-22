@@ -20,6 +20,6 @@
 	
 	(load "tests/test.lisp")
 	
-	(test10)
+	(test11)
 
 )

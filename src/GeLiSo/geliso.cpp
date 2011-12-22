@@ -48,16 +48,22 @@ namespace GeLiSo
 		return new GeLiSoSpace(share,*this);
 	}
 	
-	//print method
-	void GeLiSoSpace::print(void) const 
+	//print methods
+	void GeLiSoSpace::print(std::ostream& os) const
 	{
-		std::cout << "The GeLiSoSpace is now printed below : " << std::endl;
+		os << "The GeLiSoSpace is now printed below : " << std::endl;
 	    for (int i = 0; i < rv.size(); i++)
 	   	{
-			std::cout << "Variable number" << i << std::endl;
-			std::cout << "\trv[" << i << "]: " << rv[i] << std::endl;
+			os << "Variable number" << i << std::endl;
+			os << "\trv[" << i << "]: " << rv[i] << std::endl;
 		}
-		std::cout << "No more variable" << std::endl;
+		os << "No more variable" << std::endl;
+		
+	}
+	
+	void GeLiSoSpace::print(void) const 
+	{
+		print(cout);
 	}
 	
 	//get vector size

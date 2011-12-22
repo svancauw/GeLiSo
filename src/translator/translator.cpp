@@ -708,6 +708,27 @@ string applyMessage(variableMap& varmap, string message)
 		
 	}
 	
+	if (!strcmp(functionToApply, "printSpace"))
+	{
+		
+		//string stream used to get the uuid
+		stringstream sssp;
+				
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+		//fill a stream with the space content
+		std::stringstream os;
+	    sp->print(os);
+				
+		//UUID of the search engine
+		ack = boost::lexical_cast<std::string>(os.str().c_str());
+	}
+	
 	
 	
 	//return the ack (uuid if we created a new variable)

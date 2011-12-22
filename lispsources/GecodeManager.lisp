@@ -375,3 +375,17 @@
   	;return the ack
 	(setq ack ack)
 )
+
+(defmethod printSpace ((gm GecodeManager) sp)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "printSpace" " " sp) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+	(print ack)
+	
+  	;return the ack
+	(setq ack ack)
+)
