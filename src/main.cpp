@@ -14,10 +14,8 @@ int main()
 	//(2) loop : receive messages, behave accordingly and answer
 	while(1)
 	{
-		cout << "Waiting for a message ... " << endl;
 		//the new message received
 		string newMessage = ch.receive();
-		cout << "Message received ! " << endl;
 		
 		//acknowledgment (a UUID if we create a new variable)
 		string ack = applyMessage(varmap, newMessage);

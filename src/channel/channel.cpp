@@ -23,10 +23,8 @@ namespace GeLiSo
 	//send a message
 	void channel::send(string message)
 	{
-		cout << "# C++ sender # " << "The following message will be sent : " << endl << message << endl;
 		message.push_back(';');
 		socket_send.send(boost::asio::buffer(message));
-		cout << "# C++ sender # " << "Message sent !" << endl;
 	}
 	
 	
@@ -39,8 +37,6 @@ namespace GeLiSo
 		string returnedMessage;//message that we will return
 		string rawMessage;
 		
-		cout << "# C++ receiver # " << "Wait for a message" << endl;
-		
 		socket_receive.receive(boost::asio::buffer(buffer_receive));
 				
 		//now that we have received the message in the buffer, we only keep the useful information
@@ -48,8 +44,6 @@ namespace GeLiSo
 		char* tok = strtok(const_cast<char *>(rawMessage.c_str()),";");//first token, which is the only that interest us
 		
 		returnedMessage.append(tok);//get the real message
-		
-		cout << "# C++ receiver # " << "The following message has been received : " << endl << returnedMessage << endl;
 		
 		//return the complete message
 		return returnedMessage;

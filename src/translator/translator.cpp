@@ -63,12 +63,9 @@ string applyMessage(variableMap& varmap, string message)
 		messageTokens = strtok (NULL, " ");//go to first component
 		while (messageTokens != NULL)
 		  {
-		    printf ("%s\n",messageTokens);
 			paramList.push_back(strtol(messageTokens,NULL,10));
 			messageTokens = strtok (NULL, " ");
 		  }
-		
-		cout << paramList << endl;
 		
 		//we create the new tuple
 		Tuple* newTuple = new Tuple(paramList);
@@ -166,8 +163,6 @@ string applyMessage(variableMap& varmap, string message)
 		//we add the variable and its uuid in the map
 		varmap[*newUUID] = &newCPRelVar;
 		
-		cout << newCPRelVar << endl;
-		
 		//the UUID as a string is the ack
 		ack = boost::lexical_cast<std::string>(*newUUID);
 		
@@ -202,7 +197,6 @@ string applyMessage(variableMap& varmap, string message)
 	
 	if (!strcmp(functionToApply, "newSearchEngine"))
 	{
-		
 		//string stream used to get the uuid
 		stringstream sssp;
 		
@@ -220,15 +214,16 @@ string applyMessage(variableMap& varmap, string message)
 		messageTokens = strtok (NULL, " ");//next token
 		int strategyID = (int) strtol(messageTokens,NULL,10);
 		
-		
 		//the search engine
 		GeLiSoEngine* engine = new GeLiSoEngine(sp, strategyID);
+		//Gecode::DFS<GeLiSoSpace>* engine= new Gecode::DFS<GeLiSoSpace>(sp);
 		
 		//we add the variable and its uuid in the map
 		varmap[*newUUID] = engine;
 		
 		//UUID of the search engine
 		ack = boost::lexical_cast<std::string>(*newUUID);
+		
 	}
 	
 	if (!strcmp(functionToApply, "nextSolution"))
@@ -725,7 +720,7 @@ string applyMessage(variableMap& varmap, string message)
 		std::stringstream os;
 	    sp->print(os);
 				
-		//UUID of the search engine
+		//ack the string representation of the space
 		ack = boost::lexical_cast<std::string>(os.str().c_str());
 	}
 	

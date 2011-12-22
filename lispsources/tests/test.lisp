@@ -346,35 +346,48 @@
 		(setq sp (newSpace gm))
 		
 		;(setq tu (newTuple gm '(1 2)))
-		(setq tu (newTuple gm '(1 2 3 4 5)))
+		(setq tu1 (newTuple gm '(1 2 3 4 5)))
 		(setq tu2 (newTuple gm '(6 7 8 9 10)))
+		
+		(setq tu21 (newTuple gm '(1 2 3 4 5)))
+		(setq tu22 (newTuple gm '(6 7 8 9 10)))
 		
 		(setq glb1 (newGRelation gm 5))
 		(setq lub1 (newGRelation gm 5))
 		
-		(GRelation-AddTuple gm lub1 tu)
+		(GRelation-AddTuple gm lub1 tu1)
 		(GRelation-AddTuple gm lub1 tu2)
 		
 		(setq var1 (newCPRelVar gm sp glb1 lub1))
 		
+		(setq glb2 (newGRelation gm 5))
+		(setq lub2 (newGRelation gm 5))
+		
+		(GRelation-AddTuple gm lub2 tu21)
+		(GRelation-AddTuple gm lub2 tu22)
+		
+		(setq var2 (newCPRelVar gm sp glb2 lub2))
+		
+		(setq glb3 (newGRelation gm 5))
+		(setq lub3 (newGRelation gm 5))
+		
+		(GRelation-AddTuple gm lub3 tu1)
+		(GRelation-AddTuple gm lub3 tu2)
+		
+		(setq var3 (newCPRelVar gm sp glb3 lub3))
+		
+		(printSpace gm sp)
+		
 		(branch gm sp var1)
+		
+		(branch gm sp var2)
+		(branch gm sp var3)
 		
 		(setq se (newSearchEngine gm sp 0))
 		
 		(setq sol1 (nextSolution gm sp se))
 		
-		(setq sol2 (nextSolution gm sp se))
-		
-		(setq solRel1 (getVarInSpace gm sol1 var1))
-		
-		(setq solRel2 (getVarInSpace gm sol2 var1))
-		
-		(print "solRel1 : ")
-		(print solRel1)
-		(print "solRel2 : ")
-		(print solRel2)
-		
-		(printSpace gm sp)
+		(printSpace gm sol1)
 				
 		(quitGecode gm)
 		

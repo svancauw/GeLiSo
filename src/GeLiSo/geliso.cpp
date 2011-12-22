@@ -22,23 +22,11 @@ namespace GeLiSo
 	//constructor 
 	GeLiSoSpace::GeLiSoSpace(void)
 	{
-		/*freopen ("/tmp/mystdout.txt","w",stdout);
-		freopen ("/tmp/mystderr.txt","w",stderr);
-		std::cout << "Redirected stdout." << std::endl;
-		std::cerr << "Redirected stderr." << std::endl;
-		cout << "CPCLSpace constructed" << endl;
-		cout << "Here is rv.size() : " << (int) rv.size() << endl;
-		cerr << "Here is rv.size() : " << (int) rv.size() << endl;
-		rv.reserve(1000); //TODO : fix the problem solved by using this line. This line shoudln't have to be used
-		cout << "Here is rv.size() : " << (int) rv.size() << endl;
-		cerr << "Here is rv.size() : " << (int) rv.size() << endl;*/
+		rv.reserve(1000);//TODO : HACK ADDED BUT MUST BE REMOVED !!! 
 	}
 	//destructor
 	GeLiSoSpace::~GeLiSoSpace(void)
 	{
-		/*cout << "CPCLSpace destructed" << endl;
-		fclose(stdout);
-	    fclose(stderr);*/
 	}
 	
 	//copy method
@@ -123,8 +111,10 @@ namespace GeLiSo
 			//dfs strategy
 		     case 0: 
 			{
-		          	cout << "Engine with DFS strategy constructed" << endl;
+		          	cout << "Engine with DFS strategy will be constructed" << endl;
+					cout << sizeof(GeLiSoSpace) << endl;
 					e = dfs(sp,sizeof(GeLiSoSpace),o);
+					cout << "Engine with DFS strategy constructed" << endl;
 		          	break;
 		    }
 			//bab strategy
