@@ -10,6 +10,8 @@ namespace GeLiSo
 	//copy constructor
 	GeLiSoSpace::GeLiSoSpace(bool share, GeLiSoSpace& s) : Space(share, s), rv(s.rv) 
 	{
+		cout << "GeLiSoSpace : copy constructor called" << endl;
+		cout << rv.size() << endl;
 		for (int i = 0; i < rv.size(); i++)
 	   	{
 			cout << "Var" << i << "copied" << endl;
@@ -22,7 +24,7 @@ namespace GeLiSo
 	//constructor 
 	GeLiSoSpace::GeLiSoSpace(void)
 	{
-		rv.reserve(1000);//TODO : HACK ADDED BUT MUST BE REMOVED !!! 
+		//rv.reserve(1000);//TODO : HACK ADDED BUT MUST BE REMOVED !!! 
 	}
 	//destructor
 	GeLiSoSpace::~GeLiSoSpace(void)
@@ -42,7 +44,7 @@ namespace GeLiSo
 		os << "The GeLiSoSpace is now printed below : " << std::endl;
 	    for (int i = 0; i < rv.size(); i++)
 	   	{
-			os << "Variable number" << i << std::endl;
+			os << "Variable number : " << i << std::endl;
 			os << "\trv[" << i << "]: " << rv[i] << std::endl;
 		}
 		os << "No more variable" << std::endl;
@@ -78,6 +80,37 @@ namespace GeLiSo
 		return rv[index];
 	}
 	
+	//function useful to debug
+	void GeLiSoSpace::debug(void)
+	{
+		//makes occur the same error as in the main : Assertion failed: (px != 0), function operator*, file /usr/local/include/boost/smart_ptr/shared_ptr.hpp, line 418.
+		//Abort trap
+		/*cout << "strange test : " << endl ;
+		cout << rv[-1] << endl;*/
+		
+		//cout << "rv : " << rv.print() << endl;
+		cout << "rv adress : " << &rv << endl;
+		
+		cout << "variable addresses : " << endl;
+		for (int i = 0; i < rv.size(); i++)
+	   	{
+			cout << "Variable number : " << i << std::endl;
+			cout << "\trv[" << i << "]: " << &(rv[i]) << std::endl;
+		}
+		
+		cout << "variable indexes : " << endl;
+		for (int i = 0; i < rv.size(); i++)
+	   	{
+			cout << "Variable number : " << i << std::endl;
+			cout << "\trv[" << i << "]: " << rv[i].getVectorIndex() << std::endl;
+		}
+		
+		cout << "variables : " << endl;
+		
+		print();
+		
+	}
+	
 	
 /***********************************************CPCLCPRelVar class****************************************/		
 	
@@ -87,8 +120,23 @@ namespace GeLiSo
 	//constructor
 	GeLiSoCPRelVar::GeLiSoCPRelVar(GeLiSoSpace& home, const GRelation& l, const GRelation& u):MPG::CPRelVar(home, l, u)
     {
+		cerr << "Normal constructor called and index is -1 " << endl;
       vectorIndex = -1;
     }
+
+	//copy constructor
+	GeLiSoCPRelVar::GeLiSoCPRelVar(const GeLiSoCPRelVar& y):MPG::CPRelVar(y)
+	{
+		cerr << "GeLiSoCPRelVar : copy constructor called " << endl;
+		vectorIndex = y.vectorIndex;
+	}
+
+	/*/// Constructor from a variable implementation \a y
+	GeLiSoCPRelVar::GeLiSoCPRelVar(CPRel::CPRelVarImp *y):MPG::CPRelVar(y)
+	{
+		cerr << "GeLiSoCPRelVar : constructor from var imp called " << endl;
+		vectorIndex = 0;
+	}*/
 
 	//get and set
     int GeLiSoCPRelVar::getVectorIndex(void)

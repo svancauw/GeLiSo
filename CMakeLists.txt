@@ -5,6 +5,14 @@ project(${PROJECT_NAME})
 ###################################################################################################
 #											general settings									  #
 ###################################################################################################
+
+IF(NOT CMAKE_BUILD_TYPE)
+	message("We force the debug mode")
+  SET(CMAKE_BUILD_TYPE Debug CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-support")
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
@@ -28,7 +36,6 @@ if (GCC_VERSION VERSION_GREATER 4.6 OR GCC_VERSION VERSION_EQUAL 4.6)
 else()
 	message(FATAL_ERROR "GCC version must at least 4.6")	
 endif()
-	
 
 ##########################################################################
 # Additional compiler flags
@@ -104,6 +111,5 @@ target_link_libraries(gelisoexec ${requiredLibs})
 #test server in C++
 #add_executable(testserver "easytests/test_server.cpp")
 #target_link_libraries(testserver ${requiredLibs})
-
 
 ##########################################################################

@@ -47,6 +47,9 @@ namespace GeLiSo
 		//get the CPRelVar at a given index in rv
 		GeLiSoCPRelVar&
 	    getGeLiSoCPRelVar(int index);
+	
+		//function useful to debug
+		void debug(void);
 		
 	};
 
@@ -58,7 +61,14 @@ namespace GeLiSo
 		GeLiSoCPRelVar(void);//default constructor
 	public:
 		//constructor
-		GeLiSoCPRelVar(GeLiSoSpace& home, const MPG::GRelation& l, const MPG::GRelation& u);//:MPG::CPRelVar(home, l, u);
+		GeLiSoCPRelVar(GeLiSoSpace& home, const MPG::GRelation& l, const MPG::GRelation& u);
+		
+		//copy constructor
+		GeLiSoCPRelVar(const GeLiSoCPRelVar& y);
+		
+		/*/// Constructor from a variable implementation \a y
+		GeLiSoCPRelVar(MPG::CPRel::CPRelVarImp *y);*/
+		
 		//get and set
 		int getVectorIndex(void);
 		void setVectorIndex(int newIndex);	

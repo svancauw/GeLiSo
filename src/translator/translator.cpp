@@ -391,11 +391,18 @@ string applyMessage(variableMap& varmap, string message)
 			sssp >> spUUID;
 			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
 			
+			int i = 1;
+			cerr << i << endl;
+			i++;
+			
 			//get the relA (second parameter)
 			messageTokens = strtok (NULL, " ");//next token
 			ssrelA << messageTokens;
 			ssrelA >> relAUUID;
 			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			cerr << i << endl;
+			i++;
 			
 			//get the relB (third parameter)
 			messageTokens = strtok (NULL, " ");//next token
@@ -403,13 +410,26 @@ string applyMessage(variableMap& varmap, string message)
 			ssrelB >> relBUUID;
 			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
 			
+			cerr << i << endl;
+			i++;
+			
 			//get the relC (fourth parameter)
 			messageTokens = strtok (NULL, " ");//next token
 			ssrelC << messageTokens;
 			ssrelC >> relCUUID;
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
 			
+			cerr << i << endl;
+			i++;
+			
+			cerr << "relA : " << relA << endl;
+			cerr << "relB : " << relB << endl;
+			cerr << "relC : " << relC << endl;
+			
 			intersect(*sp,*relA,*relB,*relC);
+			
+			cerr << i << endl;
+			i++;
 			
 		}
 		

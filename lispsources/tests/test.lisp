@@ -378,6 +378,8 @@
 		
 		(printSpace gm sp)
 		
+		(intersectConstraint gm sp var1 var2 var3)
+		
 		(branch gm sp var1)
 		
 		(branch gm sp var2)
@@ -387,7 +389,15 @@
 		
 		(setq sol1 (nextSolution gm sp se))
 		
+		(setq sol2 (nextSolution gm sp se))
+		
+		(setq sol3 (nextSolution gm sp se))
+		
 		(printSpace gm sol1)
+		
+		(printSpace gm sol2)
+		
+		(printSpace gm sol3)
 				
 		(quitGecode gm)
 		
