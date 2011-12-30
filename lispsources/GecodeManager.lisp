@@ -110,7 +110,7 @@
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))
 	
-  	;return the uuid to be able to access the cprelvar
+  	;return the uuid to be able to access the cprelvar	
 	(setq ack ack)
 )
 
@@ -246,7 +246,7 @@
 
 (defmethod intersectConstraint ((gm GecodeManager) sp relA relB relC)
 	
-	;send the message	
+	;send the message
 	(sendMessage (concatenate 'string "Constraint intersect" " " sp " " relA " " relB " " relC) (getSender gm))
 			
 	;wait for the answer
@@ -380,6 +380,20 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "printSpace" " " sp) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+	(print ack)
+	
+  	;return the ack
+	(setq ack ack)
+)
+
+(defmethod debugSpace ((gm GecodeManager) sp)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "debugSpace" " " sp) (getSender gm))
 			
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))

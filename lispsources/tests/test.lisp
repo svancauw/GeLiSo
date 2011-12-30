@@ -376,14 +376,14 @@
 		
 		(setq var3 (newCPRelVar gm sp glb3 lub3))
 		
-		(printSpace gm sp)
-		
-		(intersectConstraint gm sp var1 var2 var3)
+		;(debugSpace gm sp)
 		
 		(branch gm sp var1)
 		
 		(branch gm sp var2)
 		(branch gm sp var3)
+		
+		(intersectConstraint gm sp var1 var2 var3)
 		
 		(setq se (newSearchEngine gm sp 0))
 		

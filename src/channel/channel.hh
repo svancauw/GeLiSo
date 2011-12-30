@@ -19,7 +19,7 @@ namespace GeLiSo
 		//socket
 		boost::asio::ip::tcp::socket socket_send;
 		//buffer
-		boost::array<char, 128> buffer_send;
+		boost::array<char, 256> buffer_send;
 		//connection acceptor
 		boost::asio::ip::tcp::acceptor acceptor_send;
 		
@@ -28,7 +28,9 @@ namespace GeLiSo
 		//socket
 		boost::asio::ip::tcp::socket socket_receive;
 		//buffer
-		boost::array<char, 128> buffer_receive;
+		//boost::array<char, 128> buffer_receive;
+		//TODO : the buffer size shouldn't have to be increased if a message is longer than the buffer size. Will be fixed later
+		boost::array<char, 256> buffer_receive;
 		//connection acceptor
 		boost::asio::ip::tcp::acceptor acceptor_receive;
 		

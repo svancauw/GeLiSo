@@ -255,8 +255,6 @@ string applyMessage(variableMap& varmap, string message)
 		
 		sol = se->next();
 		
-		sol->print();
-		
 		//we add the variable and its uuid in the map
 		varmap[*newUUID] = sol;
 		
@@ -391,18 +389,11 @@ string applyMessage(variableMap& varmap, string message)
 			sssp >> spUUID;
 			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
 			
-			int i = 1;
-			cerr << i << endl;
-			i++;
-			
 			//get the relA (second parameter)
 			messageTokens = strtok (NULL, " ");//next token
 			ssrelA << messageTokens;
 			ssrelA >> relAUUID;
 			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
-			
-			cerr << i << endl;
-			i++;
 			
 			//get the relB (third parameter)
 			messageTokens = strtok (NULL, " ");//next token
@@ -410,27 +401,14 @@ string applyMessage(variableMap& varmap, string message)
 			ssrelB >> relBUUID;
 			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
 			
-			cerr << i << endl;
-			i++;
-			
 			//get the relC (fourth parameter)
 			messageTokens = strtok (NULL, " ");//next token
 			ssrelC << messageTokens;
 			ssrelC >> relCUUID;
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
 			
-			cerr << i << endl;
-			i++;
-			
-			cerr << "relA : " << relA << endl;
-			cerr << "relB : " << relB << endl;
-			cerr << "relC : " << relC << endl;
-			
 			intersect(*sp,*relA,*relB,*relC);
-			
-			cerr << i << endl;
-			i++;
-			
+						
 		}
 		
 		if (!strcmp(constr, "union"))
@@ -744,6 +722,25 @@ string applyMessage(variableMap& varmap, string message)
 		ack = boost::lexical_cast<std::string>(os.str().c_str());
 	}
 	
+	
+	if (!strcmp(functionToApply, "debugSpace"))
+	{
+		
+		//string stream used to get the uuid
+		stringstream sssp;
+				
+		//get the space (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sssp << messageTokens;
+		sssp >> spUUID;
+		GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+		
+	    sp->debug();
+				
+		//ack the string representation of the space
+		ack = boost::lexical_cast<std::string>("check C++ side for debug informations");
+	}
 	
 	
 	//return the ack (uuid if we created a new variable)

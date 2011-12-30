@@ -40,6 +40,9 @@ namespace GeLiSo
 		//get vector size
 		int getVectorSize(void);
 		
+		//getVector adress
+		std::vector<GeLiSoCPRelVar>* getVectorAdress(void);
+		
 		//create a new CPRelVar and add it to the vector
 		GeLiSoCPRelVar&
 	    newCPRelVar(const MPG::GRelation& l, const MPG::GRelation& u);
@@ -70,7 +73,7 @@ namespace GeLiSo
 		GeLiSoCPRelVar(MPG::CPRel::CPRelVarImp *y);*/
 		
 		//get and set
-		int getVectorIndex(void);
+		int getVectorIndex(void) const;
 		void setVectorIndex(int newIndex);	
 	};
 	
