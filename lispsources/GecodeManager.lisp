@@ -71,6 +71,18 @@
 	(setq ack ack)
 )		
 
+(defmethod getTupleArity ((gm GecodeManager) tupleUUID)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "getTupleArity" " " tupleUUID) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack (as an integer number)
+	(setq ack (parse-integer ack))
+)
+
 ;create a new (empty) ground relation
 ;arity is an integer specifying the arity of the new (empty) ground relation
 (defmethod newGRelation ((gm GecodeManager) arity)

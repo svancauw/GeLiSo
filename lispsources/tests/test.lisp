@@ -402,3 +402,41 @@
 		(quitGecode gm)
 		
 )
+
+(defun test12 ()
+		(setq endpoint_receive '("127.0.0.1" 2222))
+		(setq endpoint_send '("127.0.0.1" 3333))
+		
+		;create the gecode manager and connect the sockets
+		(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
+					
+		(setq sp (newSpace gm))
+		
+		;(setq tu (newTuple gm '(1 2)))
+		(setq tu1 (newTuple gm '(1 2 3 4 5)))
+		
+		(print (getTupleArity gm tu1))
+				
+		(quitGecode gm)
+		
+)
+
+(defun test13 ()
+		(setq endpoint_receive '("127.0.0.1" 2222))
+		(setq endpoint_send '("127.0.0.1" 3333))
+		
+		;create the gecode manager and connect the sockets
+		(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
+					
+		(setq sp (newSpace gm))
+		
+		(setq glb (newGRelation gm 3))
+		(setq lub (first (createBoundedFullGroundRelation '(0 5 6 10 11 15))))
+		
+		(setq var (newCPRelVar gm sp glb lub))
+		
+		(printSpace gm sp)
+				
+		(quitGecode gm)
+		
+)

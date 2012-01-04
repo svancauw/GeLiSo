@@ -15,11 +15,12 @@
 	;load the needed files
 	(load "channel.lisp")
 	(load "GecodeManager.lisp")
+	(load "open music add-ons/CPRel_utils.lisp")
 	
 	;load the test file
 	
 	(load "tests/test.lisp")
 	
-	(test11)
+	(test13)
 
 )

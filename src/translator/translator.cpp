@@ -78,6 +78,22 @@ string applyMessage(variableMap& varmap, string message)
 		
 	}
 	
+	if (!strcmp(functionToApply, "getTupleArity"))
+	{
+		//string streams used to get the uuid
+		stringstream sstuple;
+		
+		//get the tuple (first parameter)
+		messageTokens = strtok (NULL, " ");		
+		boost::uuids::uuid spUUID;
+		sstuple << messageTokens;
+		sstuple >> spUUID;
+		Tuple* t = (Tuple*) varmap[spUUID];
+						
+		ack = boost::lexical_cast<std::string>(t->arity());
+		
+	}
+	
 	if (!strcmp(functionToApply, "newGRelation"))
 	{
 		//we create the new uuid for the new variable
