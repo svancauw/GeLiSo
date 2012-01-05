@@ -89,7 +89,7 @@
 		;add the tuple
 		(GRelation-AddTuple gm gr (first tupleUUIDList))
 		
-		(setq TupleUUIDList (cdr TupleUUIDList))
+		(setq tupleUUIDList (cdr tupleUUIDList))
 	)
 	
 	(setq toReturn gr)
@@ -149,9 +149,11 @@
 			(loop for tempDuration from duration_min to duration_max do
 				
 				;the new tuple
-				(setq tempTuple (newTuple gm tempPitch tempOnset tempDuration))
+				(setq tempTuple (newTuple gm (append (list tempPitch) (list tempOnset) (list tempDuration))))
 				
-				(setq tupleUUIDList (append tupleUUIDList tempTuple))
+				(print (append (list tempPitch) (list tempOnset) (list tempDuration)))
+				
+				(setq tupleUUIDList (append tupleUUIDList (list tempTuple)))
 			)
 		)
 	)
@@ -161,15 +163,15 @@
 ;creates a complete ground relation bounded for each component (ternary relation)
 ;pre : gm is a well initialized Gecode Manager 
 ;return a list in which the first element is the ground relation uuid and the second is the list of tuple uuid
-(defun createBoundedFullGroundRelation (minMaxList)
+(defun createBoundedFullGroundRelation (gm minMaxList)
 	
 	;tuple UUID list
-	(setq tupleUUIDList (createTupleUUIDListForBoundedFullGroundRelation (minMaxList)))
+	(setq tupleUUIDList (createTupleUUIDListForBoundedFullGroundRelation gm minMaxList))
 	
 	;ground relation
-	(setq gr (createGroundRelFromTupleUUIDList (gm tupleUUIDList)))
+	(setq gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
 	
-	(setq toReturn (concatenate gr tupleUUIDList))
+	(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
 )
 
 

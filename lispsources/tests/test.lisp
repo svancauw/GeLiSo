@@ -431,7 +431,11 @@
 		(setq sp (newSpace gm))
 		
 		(setq glb (newGRelation gm 3))
-		(setq lub (first (createBoundedFullGroundRelation '(0 5 6 10 11 15))))
+		(setq lubAndTuple (createBoundedFullGroundRelation gm '(0 5 6 10 11 15))) 
+		(setq lub (first lubAndTuple))
+		
+		(print (first lubAndTuple))
+		(print (second lubAndTuple))
 		
 		(setq var (newCPRelVar gm sp glb lub))
 		
