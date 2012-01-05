@@ -151,8 +151,6 @@
 				;the new tuple
 				(setq tempTuple (newTuple gm (append (list tempPitch) (list tempOnset) (list tempDuration))))
 				
-				(print (append (list tempPitch) (list tempOnset) (list tempDuration)))
-				
 				(setq tupleUUIDList (append tupleUUIDList (list tempTuple)))
 			)
 		)
