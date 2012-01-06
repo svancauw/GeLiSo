@@ -271,11 +271,20 @@ string applyMessage(variableMap& varmap, string message)
 		
 		sol = se->next();
 		
-		//we add the variable and its uuid in the map
-		varmap[*newUUID] = sol;
+		if(sol)//if there is a (next) solution
+		{
+			//we add the variable and its uuid in the map
+			varmap[*newUUID] = sol;
+
+			//UUID of the search engine
+			ack = boost::lexical_cast<std::string>(*newUUID);
+			
+		}
+		else//if not
+		{
+			ack = "0";
+		}
 		
-		//UUID of the search engine
-		ack = boost::lexical_cast<std::string>(*newUUID);
 	}
 	
 	if (!strcmp(functionToApply, "quitGecode"))
