@@ -544,6 +544,40 @@ string applyMessage(variableMap& varmap, string message)
 			
 		}
 		
+		if (!strcmp(constr, "permutation"))
+		{
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the relB (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//create the permutation descriptor
+			PermDescriptor* d = new PermDescriptor();//TODO : this memory must be freed at some point !
+			
+			//fill the permutation descriptor
+			while(messageTokens = strtok (NULL, " "))
+			{
+				//0 and 2 are indexes in messageTokens for the components to permute
+				d->permute(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10));
+			}
+			
+			permutation(*sp,*relA,*relB,*d);
+			
+		}
+		
 		if (!strcmp(constr, "projection"))
 		{
 			//get the space (first parameter)

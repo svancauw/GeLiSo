@@ -316,6 +316,32 @@
 	(setq ack ack)
 )
 
+;permDesc is a list of list of integers, where the sublists are pairs of component number to be permuted.
+(defmethod permutationConstraint ((gm GecodeManager) sp relA relB permDesc)
+	
+	;string permDesc
+	(setq strPD "")
+
+	;fill the string permDes
+	(loop while (first permDesc) do
+		
+		;add the permuation as a string
+		(setq strPD (concatenate 'string strPD " " (write-to-string (first permDesc)) "_" (write-to-string (second permDesc))))
+		
+		;next permutation
+		(setq permDesc (cdr permDesc))
+	)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint permutation" " " sp " " relA relB strPD) (getSender gm))
+			
+	;wait for the answer
+	(setq ack (receiveMessage (getReceiver gm)))
+	
+  	;return the ack
+	(setq ack ack)
+)
+
 (defmethod projectionConstraint ((gm GecodeManager) sp p relA relB)
 	
 	;send the message	
