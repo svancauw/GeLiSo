@@ -570,16 +570,10 @@ string applyMessage(variableMap& varmap, string message)
 			//fill the permutation descriptor
 			while(messageTokens = strtok (NULL, " "))
 			{
-				cout << strtol(&(messageTokens[0]),NULL,10) << endl;
-				cout << strtol(&(messageTokens[2]),NULL,10) << endl;
-				
-				cout << relA->arity() << endl;
-				cout << relB->arity() << endl;
 				
 				//0 and 2 are indexes in messageTokens for the components to permute
 				d->permute(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10));
 				
-				//cout << d->getPerm() << endl; 
 			}
 			
 			permutation(*sp,*relA,*relB,*d);
@@ -618,31 +612,56 @@ string applyMessage(variableMap& varmap, string message)
 		{
 			//get the space (first parameter)
 			messageTokens = strtok (NULL, " ");		
+			
+			cout << messageTokens << endl;
+			
 			sssp << messageTokens;
 			sssp >> spUUID;
 			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
 			
+			cout << *sp << endl;
+			
 			//get the relA (second parameter)
 			messageTokens = strtok (NULL, " ");//next token
+			
+			cout << messageTokens << endl;
+			
 			ssrelA << messageTokens;
 			ssrelA >> relAUUID;
 			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
 			
+			cout << *relA << endl;
+			
 			//get the integer (third parameter)
 			messageTokens = strtok (NULL, " ");//next token
+			
+			cout << messageTokens << endl;
+			
 			int j = strtol(messageTokens,NULL,10);
+			
+			cout << j << endl;
 			
 			//get the relB (fourth parameter)
 			messageTokens = strtok (NULL, " ");//next token
+			
+			cout << messageTokens << endl;
+			
 			ssrelB << messageTokens;
 			ssrelB >> relBUUID;
 			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
 			
+			cout << *relB << endl;
+			
 			//get the relC (fifth parameter)
 			messageTokens = strtok (NULL, " ");//next token
+			
+			cout << messageTokens << endl;
+			
 			ssrelC << messageTokens;
 			ssrelC >> relCUUID;
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			cout << *relC << endl;
 			
 			join(*sp,*relA,j,*relB,*relC);
 			

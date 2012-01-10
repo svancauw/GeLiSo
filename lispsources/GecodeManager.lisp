@@ -326,14 +326,14 @@
 	(loop while (first permDesc) do
 		
 		;add the permuation as a string
-		(setq strPD (concatenate 'string strPD " " (write-to-string (first permDesc)) "_" (write-to-string (second permDesc))))
+		(setq strPD (concatenate 'string strPD " " (write-to-string (first (first permDesc))) "_" (write-to-string (second (first permDesc)))))
 		
 		;next permutation
 		(setq permDesc (cdr permDesc))
 	)
 	
 	;send the message	
-	(sendMessage (concatenate 'string "Constraint permutation" " " sp " " relA relB strPD) (getSender gm))
+	(sendMessage (concatenate 'string "Constraint permutation" " " sp " " relA " " relB " " strPD) (getSender gm))
 			
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))
@@ -358,6 +358,8 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint join" " " sp " " relA " " (write-to-string j) " " relB " " relC) (getSender gm))
+	
+	(print (concatenate 'string "Constraint join" " " sp " " relA " " (write-to-string j) " " relB " " relC))
 			
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))
