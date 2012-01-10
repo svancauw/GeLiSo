@@ -570,8 +570,16 @@ string applyMessage(variableMap& varmap, string message)
 			//fill the permutation descriptor
 			while(messageTokens = strtok (NULL, " "))
 			{
+				cout << strtol(&(messageTokens[0]),NULL,10) << endl;
+				cout << strtol(&(messageTokens[2]),NULL,10) << endl;
+				
+				cout << relA->arity() << endl;
+				cout << relB->arity() << endl;
+				
 				//0 and 2 are indexes in messageTokens for the components to permute
 				d->permute(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10));
+				
+				//cout << d->getPerm() << endl; 
 			}
 			
 			permutation(*sp,*relA,*relB,*d);

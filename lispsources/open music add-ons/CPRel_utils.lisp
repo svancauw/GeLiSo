@@ -72,30 +72,6 @@
 	
 )
 
-;create a ground relation containing all the tuples identified in tupleUUIDList
-;pre : gm is a well initialized Gecode Manager 
-;		the tuples all have the same arity
-(defun createGroundRelFromTupleUUIDList (gm tupleUUIDList)
-
-	;get the arity of the first tuple (equal to arity of the ground relation to be constructed)
-	(setq arity (getTupleArity gm (first tupleUUIDList)))
-
-	;empty ground relation
-	(setq gr (newGRelation gm arity))
-		
-	;while there are tuple uuids in the list, we continue adding tuple	
-	(loop while (first tupleUUIDList) do
-		
-		;add the tuple
-		(GRelation-AddTuple gm gr (first tupleUUIDList))
-		
-		(setq tupleUUIDList (cdr tupleUUIDList))
-	)
-	
-	(setq toReturn gr)
-	
-	
-)
 
 ;creates a list of tuples of arity 3 from a list of tuples of arity 5 (ie only get the 3 first elements of each list)
 ;tuples are here Common Lisp lists
@@ -119,58 +95,45 @@
 
 
 ;create a list of tuple uuids. the set of tuples will be a ground relation complete ground relation bounded for each component (ternary relation)
-(defun createTupleUUIDListForBoundedFullGroundRelation (gm minMaxList)
-	
-	;get the different bounds
-	(setq pitch_min (car minMaxList))
-	(setq minMaxList (cdr minMaxList))
-	
-	(setq pitch_max (car minMaxList))
-	(setq minMaxList (cdr minMaxList))
-	
-	(setq onset_min (car minMaxList))
-	(setq minMaxList (cdr minMaxList))
-	
-	(setq onset_max (car minMaxList))
-	(setq minMaxList (cdr minMaxList))
-	
-	(setq duration_min (car minMaxList))
-	(setq minMaxList (cdr minMaxList))
-	
-	(setq duration_max (car minMaxList))
-	
-	;list of tuple uuids
-	(setq tupleUUIDList nil)
-	
-	(loop for tempPitch from pitch_min to pitch_max do
-		
-		(loop for tempOnset from onset_min to onset_max do
-			
-			(loop for tempDuration from duration_min to duration_max do
-				
-				;the new tuple
-				(setq tempTuple (newTuple gm (append (list tempPitch) (list tempOnset) (list tempDuration))))
-				
-				(setq tupleUUIDList (append tupleUUIDList (list tempTuple)))
-			)
-		)
-	)
-	(setq toReturn tupleUUIDList)
-)
+; (defun createTupleUUIDListForBoundedFullGroundRelation (gm minMaxList)
+; 	
+; 	;get the different bounds
+; 	(setq pitch_min (car minMaxList))
+; 	(setq minMaxList (cdr minMaxList))
+; 	
+; 	(setq pitch_max (car minMaxList))
+; 	(setq minMaxList (cdr minMaxList))
+; 	
+; 	(setq onset_min (car minMaxList))
+; 	(setq minMaxList (cdr minMaxList))
+; 	
+; 	(setq onset_max (car minMaxList))
+; 	(setq minMaxList (cdr minMaxList))
+; 	
+; 	(setq duration_min (car minMaxList))
+; 	(setq minMaxList (cdr minMaxList))
+; 	
+; 	(setq duration_max (car minMaxList))
+; 	
+; 	;list of tuple uuids
+; 	(setq tupleUUIDList nil)
+; 	
+; 	(loop for tempPitch from pitch_min to pitch_max do
+; 		
+; 		(loop for tempOnset from onset_min to onset_max do
+; 			
+; 			(loop for tempDuration from duration_min to duration_max do
+; 				
+; 				;the new tuple
+; 				(setq tempTuple (newTuple gm (append (list tempPitch) (list tempOnset) (list tempDuration))))
+; 				
+; 				(setq tupleUUIDList (append tupleUUIDList (list tempTuple)))
+; 			)
+; 		)
+; 	)
+; 	(setq toReturn tupleUUIDList)
+; )
 
-;creates a complete ground relation bounded for each component (ternary relation)
-;pre : gm is a well initialized Gecode Manager 
-;return a list in which the first element is the ground relation uuid and the second is the list of tuple uuid
-(defun createBoundedFullGroundRelation (gm minMaxList)
-	
-	;tuple UUID list
-	(setq tupleUUIDList (createTupleUUIDListForBoundedFullGroundRelation gm minMaxList))
-	
-	;ground relation
-	(setq gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
-	
-	(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
-)
 
 
 ;returns the minimum and maximum values of parameters (ternary relation)
@@ -271,4 +234,129 @@
 	
 	(setq newMinMax (reverse newMinMax))
 	
+)
+
+
+;from the list l, create a list of list, in which every element is the list l concatenated with one of the element between i and j
+; l is a list of integers
+; i and j are integers and i <= j
+(defun appendListWithIntegers (l i j)
+	
+	(setq listOfLists nil)
+	
+	;other elements
+	(loop for x from i to j do
+	        (push (append l (list x)) listOfLists)
+	)
+	
+	(setq listOfLists listOfLists)
+	
+)
+
+
+;create a list of tuples (as lisp lists) from component bounds
+;boundsList is a list of pairs (min max), where min is the min value of the component and max 
+;is the max value of that component
+;the tuples are of arity (length boundsList) / 2	
+
+(defun createLispTupleFromBounds (boundsList)
+	
+	;temporary list of tuples, initialized with unary tuples for the first component bounds
+	(setq tempTupleList (appendListWithIntegers nil (first (first boundsList)) (second (first boundsList))))
+	
+	;the first component is already done, so we skip it
+	(setq boundsList (rest boundsList))
+	
+	(loop while (first boundsList) do
+		
+		;will be the list updated with the new component
+		(setq tempUpdatedTupleList nil)
+		
+		(loop while (first tempTupleList) do
+		
+			;we create a list of tuples from current tuple and current bounds
+			(setq newListTuplesWithCurrentBoundsAdded (appendListWithIntegers (first tempTupleList) (first (first boundsList)) (second (first boundsList))))
+		
+			;we add that tuple list to the new updated list
+			(setq tempUpdatedTupleList (append newListTuplesWithCurrentBoundsAdded tempUpdatedTupleList))
+		
+			;next tuple of the temporary list
+			(setq tempTupleList (rest tempTupleList))
+		)
+		
+		;the tuple list is now the updated list
+		(setq tempTupleList tempUpdatedTupleList)
+		
+		;next component bounds
+		(setq boundsList (rest boundsList))
+	)
+
+	(setq finalTupleList tempTupleList)
+)
+
+;create Gecode tuple uuid list from lisp tuple uuid list
+;gm is a well initiated gecode manager
+(defun createTupleUUIDListFromLispTupleList (gm lispTupleList)
+
+	(setq finalTupleUUIDList nil)
+	
+	(loop while (first lispTupleList) do
+		
+		;a new tuple
+		(setq tempTuple (newTuple gm (first lispTupleList)))
+		
+		;add the new uuid tuple to the list
+		(setq finalTupleUUIDList (append finalTupleUUIDList (list tempTuple)))
+		
+		(setq lispTupleList (rest lispTupleList))
+	)
+	
+	(setq finalTupleUUIDList finalTupleUUIDList)
+	
+	
+)
+
+
+;create a ground relation containing all the tuples identified in tupleUUIDList
+;pre : gm is a well initialized Gecode Manager 
+;		the tuples all have the same arity
+(defun createGroundRelFromTupleUUIDList (gm tupleUUIDList)
+
+	;get the arity of the first tuple (equal to arity of the ground relation to be constructed)
+	(setq arity (getTupleArity gm (first tupleUUIDList)))
+
+	;empty ground relation
+	(setq gr (newGRelation gm arity))
+		
+	;while there are tuple uuids in the list, we continue adding tuple	
+	(loop while (first tupleUUIDList) do
+		
+		;add the tuple
+		(GRelation-AddTuple gm gr (first tupleUUIDList))
+		
+		(setq tupleUUIDList (cdr tupleUUIDList))
+	)
+	
+	(setq toReturn gr)
+	
+	
+)
+
+
+;creates a complete ground relation bounded for each component
+;pre : gm is a well initialized Gecode Manager 
+;return a list in which the first element is the ground relation uuid and the second is the list of tuple uuid
+;minMaxList is a list of couples (min and max value of a given component)
+(defun createBoundedFullGroundRelation (gm minMaxList)
+	
+	;lisp tuple list
+	(setq lispTupleList (createLispTupleFromBounds minMaxList))
+	
+	;tuple UUID list
+	(setq tupleUUIDList (createTupleUUIDListFromLispTupleList gm lispTupleList))
+	
+	;ground relation
+	(setq gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
+	
+	(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
 )
