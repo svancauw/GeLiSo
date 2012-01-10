@@ -358,8 +358,6 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint join" " " sp " " relA " " (write-to-string j) " " relB " " relC) (getSender gm))
-	
-	(print (concatenate 'string "Constraint join" " " sp " " relA " " (write-to-string j) " " relB " " relC))
 			
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))
