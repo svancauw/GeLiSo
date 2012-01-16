@@ -370,6 +370,8 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC) (getSender gm))
+	
+	(print (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC))
 			
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))

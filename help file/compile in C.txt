@@ -1,0 +1,1 @@
+/Users/saschavancauwelaert/gcc_461/bin/g++ test.cpp -o test -I/usr/local/include/obj/ -I/usr/local/include/mtr/ -I/usr/local/include/epd/ -I/usr/local/include/st/ -I/usr/local/include/cudd/ -std=c++0x -L/usr/local/lib/ -lgecodekernel -lgecodeint -lgecodesearch -lgecodesupport -lgecodeset -lgecodecprel -lbdddomain -lgecodegist

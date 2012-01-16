@@ -644,6 +644,7 @@ string applyMessage(variableMap& varmap, string message)
 		
 		if (!strcmp(constr, "follow"))
 		{
+			
 			//get the space (first parameter)
 			messageTokens = strtok (NULL, " ");		
 			sssp << messageTokens;

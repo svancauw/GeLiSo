@@ -444,3 +444,60 @@
 		(quitGecode gm)
 		
 )
+
+;join constraint test
+(defun test14 ()
+		(setq endpoint_receive '("127.0.0.1" 2222))
+		(setq endpoint_send '("127.0.0.1" 3333))
+		
+		;create the gecode manager and connect the sockets
+		(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
+					
+		(setq sp (newSpace gm))
+		
+		(setq grA (newGRelation gm 3))
+		(setq tuA (newTuple gm '(1 2 3)))
+		(GRelation-AddTuple gm grA tuA)
+		
+		(setq varA (newCPRelVar gm sp grA grA))
+		
+		(setq grB (newGRelation gm 3))
+		(setq tuB1 (newTuple gm '(2 3 7)))
+		(setq tuB2 (newTuple gm '(2 3 8)))
+		(setq tuB3 (newTuple gm '(2 4 9)))
+		(GRelation-AddTuple gm grB tuB1)
+		(GRelation-AddTuple gm grB tuB2)
+		(GRelation-AddTuple gm grB tuB3)
+		
+		(setq varB (newCPRelVar gm sp grB grB))
+		
+		(setq glbC (newGRelation gm 4))
+		(setq lubC (newGRelation gm 4))
+		
+		(setq tuC1 (newTuple gm '(1 2 3 7)))
+		(setq tuC2 (newTuple gm '(1 2 3 8)))
+		(GRelation-AddTuple gm lubC tuC1)
+		(GRelation-AddTuple gm lubC tuC2)
+		
+		(setq varC (newCPRelVar gm sp glbC lubC))
+		
+		(printSpace gm sp)
+		
+		(joinConstraint gm sp varA 2 varB varC)
+		
+		(branch gm sp varA)
+		(branch gm sp varB)
+		
+		(setq se (newSearchEngine gm sp 0))
+		
+		(setq sol1 (nextSolution gm sp se))
+		
+		(if (string/= sol1 "0")
+			(progn 
+			(printSpace gm sol1)	
+			)
+		)
+				
+		(quitGecode gm)
+		
+)
