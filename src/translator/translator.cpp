@@ -604,6 +604,10 @@ string applyMessage(variableMap& varmap, string message)
 			ssrelB >> relBUUID;
 			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
 			
+			cout << "p : " << p << endl;
+			cout << "relA.arity : " << relA->arity() << endl;
+			cout << "relB.arity : " << relB->arity() << endl;
+			
 			projection(*sp,p,*relA,*relB);
 			
 		}

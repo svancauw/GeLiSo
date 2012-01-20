@@ -298,9 +298,27 @@
 ;gm is a well initiated gecode manager
 (defun createTupleUUIDListFromLispTupleList (gm lispTupleList)
 
+	(let (
+			(i 0)
+			(curT (get-internal-real-time))
+		 )
+
 	(setq finalTupleUUIDList nil)
 	
+	(print "we will create a list of" )
+	(print (length lispTupleList))
+	(print "tuples" )
+	
 	(loop while (first lispTupleList) do
+		
+		(if (= (mod i 100) 0)
+			(progn
+				(print i)
+				(print (- (get-internal-real-time) curT))
+				(print "seconds")
+				(setq curT (get-internal-real-time))
+			)
+			)
 		
 		;a new tuple
 		(setq tempTuple (newTuple gm (first lispTupleList)))
@@ -309,11 +327,13 @@
 		(setq finalTupleUUIDList (append finalTupleUUIDList (list tempTuple)))
 		
 		(setq lispTupleList (rest lispTupleList))
+		
+		(setq i (+ i 1))
 	)
 	
 	(setq finalTupleUUIDList finalTupleUUIDList)
 	
-	
+	)
 )
 
 
@@ -350,13 +370,20 @@
 (defun createBoundedFullGroundRelation (gm minMaxList)
 	
 	;lisp tuple list
+	
+	(print "will create lisp tuples")
 	(setq lispTupleList (createLispTupleFromBounds minMaxList))
+	(print "lisp tuples : done")
 	
 	;tuple UUID list
+	(print "will create uuid tuples")
 	(setq tupleUUIDList (createTupleUUIDListFromLispTupleList gm lispTupleList))
+	(print "uuid tuples : done")
 	
 	;ground relation
+	(print "will create gr")
 	(setq gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
+	(print "gr : done")
 	
 	(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
 )

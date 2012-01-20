@@ -344,8 +344,10 @@
 
 (defmethod projectionConstraint ((gm GecodeManager) sp p relA relB)
 	
+	(print (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) relA relB))
+	
 	;send the message	
-	(sendMessage (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) relA relB) (getSender gm))
+	(sendMessage (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) " " relA " " relB) (getSender gm))
 			
 	;wait for the answer
 	(setq ack (receiveMessage (getReceiver gm)))
