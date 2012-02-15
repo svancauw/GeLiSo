@@ -387,3 +387,33 @@
 	
 	(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
 )
+
+
+
+;create all Lisp tuples of the "Plus" relation
+;all tuples <X Y X+Y>
+;X in [X_min X_max]
+;Y in [Y_min Y_max]
+(defun createBoundedPlus (X_bounds Y_bounds)
+	(let (
+			(X_min (first X_bounds)) 
+			(X_max (second X_bounds))
+			(Y_min (first Y_bounds)) 
+			(Y_max (second Y_bounds))
+			(tupleList nil)
+		 )
+		
+		(loop for tempX from X_min to X_max do
+			(loop for tempY from Y_min to Y_max do
+				
+				(setq tupleList (cons (list tempX tempY (+ tempX tempY)) tupleList))
+				
+			)
+			
+		)
+		
+		(setq tupleList tupleList)
+		
+	)
+	
+)
