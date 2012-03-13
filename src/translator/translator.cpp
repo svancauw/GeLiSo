@@ -642,6 +642,12 @@ string applyMessage(variableMap& varmap, string message)
 			ssrelC >> relCUUID;
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
 			
+			
+			cerr << "A.arity() : " << relA->arity() << endl;
+			cerr << "B.arity() : " << relB->arity() << endl;
+			cerr << "C.arity() : " << relC->arity() << endl;
+			cerr << "j : " << j << endl;
+			
 			join(*sp,*relA,j,*relB,*relC);
 			
 		}
