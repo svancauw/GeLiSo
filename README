@@ -1,3 +1,7 @@
-This project allow to work with the constraint programming C++ library Gecode inside the language Common Lisp (especially the Lispworks implementation).
+**********************************************************
+****   Gecode in common Lisp using Sockets (GeLiSo)   ****
+**********************************************************
+
+This project allows to work with the constraint programming C++ library Gecode inside the Common Lisp language (especially the Lispworks implementation). For this purpose, sockets are used.
 
 It is for now work in progress and cannot be used by other people than the author.
