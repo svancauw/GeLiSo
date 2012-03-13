@@ -1,0 +1,3 @@
+This project allow to work with the constraint programming C++ library Gecode inside the language Common Lisp (especially the Lispworks implementation).
+
+It is for now work in progress and cannot be used by other people than the author.
