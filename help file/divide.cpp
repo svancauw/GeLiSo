@@ -35,11 +35,13 @@ pair<GRelation,GRelation> domS(void) {
 pair<GRelation,GRelation> domT(void) {
 	GRelation ub(2);
 	  ub.add({
-		{78,7},
-		{78,8},
+		{78,7},{78,7},
+		//{78,8},
 	  });
   //return make_pair(GRelation(4),ub);
-return make_pair(GRelation(2),ub);
+//return make_pair(GRelation(2),ub);
+return make_pair(GRelation(2),create_full(2));
+
 }
 
 class JoinTest : public Gecode::Space {
@@ -60,7 +62,7 @@ public:
    divide(*this,r,2,s,t);
    branch(*this,r);
    branch(*this,s);
-   //branch(*this,t);
+   branch(*this,t);
   }
   void print(std::ostream& os, const char* varName, CPRelVar v) const {
     os << "<tr><td><b>" << varName << "</b></td>"
@@ -95,6 +97,7 @@ int main(int, char**) {
 
   JoinTest* g = new JoinTest();
 
+	g->print(cout);
   Gist::Print<JoinTest> p("Print solution");
   Gist::Options o;
   o.inspect.click(&p);
