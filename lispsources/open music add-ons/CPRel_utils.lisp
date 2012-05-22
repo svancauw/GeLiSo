@@ -2,42 +2,52 @@
 ;get a list of lists of parameters from a score represented by a list of tuples (actually represented by lists)
 (defun getScoreParamFromSol (scoreRelation)
 	
-	;list that will be return
-	(setq listOfScoreParamList nil)
+	(let (
+			;list that will be return
+			(listOfScoreParamList nil)
+			;get the arity of the score relation
+			(arity (length (first scoreRelation)))
+		)
 	
-	;get the arity of the score relation
-	(setq arity (length (first scoreRelation)))
+	
 	
 	;loop on all components
 	(loop for tempComp from 0 to (- arity 1) do
 		
-		;temp scoreRelation
-		(setq tempScoreRelation scoreRelation)
-		
-		;list that will contain all elements of the tuples, for the current component
-		(setq compParamList nil)
-		
+		(let (
+				;temp scoreRelation
+				(tempScoreRelation scoreRelation)
+				;list that will contain all elements of the tuples, for the current component
+				(compParamList nil)
+			)
+				
 		;while there are tuples
 		(loop while (first tempScoreRelation) do
-		            
-			;get the current tuple
-			(setq tempTuple (first tempScoreRelation))
+		    
+		    (let 
+				(
+					;get the current tuple
+					(tempTuple (first tempScoreRelation))
+				)
 			
 			;add the value to the list
 			(setq compParamList (cons (nth tempComp tempTuple) compParamList))
 			
+			)
 			;next tuple
 			(setq tempScoreRelation (cdr tempScoreRelation))
 		)
 		
 		;add the list of parameters to the list of lists
 		(setq listOfScoreParamList (cons compParamList listOfScoreParamList))
-		
+	
+		)
 	)
 	
 	;return the list of list of parameters (renversed)
 	(reverse listOfScoreParamList)
 	
+	)
 )
 
 
@@ -45,18 +55,21 @@
 ;pre : lists must be the same size
 (defun getTuplesFromScoreParam (paramList)
 
-	;get the lists of parameters
-	(setq pitchList (car paramList))
-	(setq onsetList (car (cdr paramList)))
-	(setq durationList (car (cdr (cdr paramList))))
+	(let
+		(
+			;get the lists of parameters
+			(pitchList (car paramList))
+			(onsetList (car (cdr paramList)))
+			(durationList (car (cdr (cdr paramList))))
 
-	;list of tuples that will be return
-	(setq tupleList nil)
-	
-	;temporary sublists
-	(setq tempPitchList pitchList)
-	(setq tempOnsetList onsetList)
-	(setq tempDurationList durationList)
+			;list of tuples that will be return
+			(tupleList nil)
+
+			;temporary sublists
+			(tempPitchList pitchList)
+			(tempOnsetList onsetList)
+			(tempDurationList durationList)
+		)
 	
 	(loop while (not (null (car tempPitchList)) ) do
 		
@@ -67,96 +80,40 @@
 		(setq tempDurationList (cdr tempDurationList))
 	)
 	
-	(setq toReturn tupleList)
+	;return
+	(setq tupleList tupleList)
 	
-	
-)
-
-
-;creates a list of tuples of arity 3 from a list of tuples of arity 5 (ie only get the 3 first elements of each list)
-;tuples are here Common Lisp lists
-(defun subTupleList3_5 (tupleList_5)
-	
-	;list to be returned
-	(setq tupleList_3 nil)
-	
-	(loop while (not (null (car tupleList_5)) ) do
-		
-		(setq tempTuple (car tempTupleList))
-		
-		(setq tupleList_3 (cons (list (car tempTuple) (car (cdr tempTuple)) (car (cdr (cdr tempTuple)))) tupleList_3))
-		
-		(setq tempTupleList (cdr tempTupleList))
 	)
-	
-	(setq tupleList_3 tupleList_3)
 )
-
-
-
-;create a list of tuple uuids. the set of tuples will be a ground relation complete ground relation bounded for each component (ternary relation)
-; (defun createTupleUUIDListForBoundedFullGroundRelation (gm minMaxList)
-; 	
-; 	;get the different bounds
-; 	(setq pitch_min (car minMaxList))
-; 	(setq minMaxList (cdr minMaxList))
-; 	
-; 	(setq pitch_max (car minMaxList))
-; 	(setq minMaxList (cdr minMaxList))
-; 	
-; 	(setq onset_min (car minMaxList))
-; 	(setq minMaxList (cdr minMaxList))
-; 	
-; 	(setq onset_max (car minMaxList))
-; 	(setq minMaxList (cdr minMaxList))
-; 	
-; 	(setq duration_min (car minMaxList))
-; 	(setq minMaxList (cdr minMaxList))
-; 	
-; 	(setq duration_max (car minMaxList))
-; 	
-; 	;list of tuple uuids
-; 	(setq tupleUUIDList nil)
-; 	
-; 	(loop for tempPitch from pitch_min to pitch_max do
-; 		
-; 		(loop for tempOnset from onset_min to onset_max do
-; 			
-; 			(loop for tempDuration from duration_min to duration_max do
-; 				
-; 				;the new tuple
-; 				(setq tempTuple (newTuple gm (append (list tempPitch) (list tempOnset) (list tempDuration))))
-; 				
-; 				(setq tupleUUIDList (append tupleUUIDList (list tempTuple)))
-; 			)
-; 		)
-; 	)
-; 	(setq toReturn tupleUUIDList)
-; )
-
-
 
 ;returns the minimum and maximum values of parameters (ternary relation)
 (defun getMinMaxParamValues (tupleList)
 
-	(setq minPossibleVal 0) ; min val number in relations
-	(setq maxPossibleVal (- (expt 2 32) 1)) ; max val number in relations
-
-	;initial list of parameters (minPitch maxPitch minOnset maxOnset minDuration maxDuration)
-	;it will be updated afterwards
-	(setq minMaxParamList (list maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal))
-		
+	(let (
+			(minPossibleVal 0) ; min val number in relations
+			(maxPossibleVal (- (expt 2 32) 1)) ; max val number in relations
+			
+			;initial list of parameters (minPitch maxPitch minOnset maxOnset minDuration maxDuration)
+			;it will be updated afterwards
+			(minMaxParamList (list maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal))
+		)
+	
 	;loop on tuple
 	(loop while (first tupleList) do
 
-		;current tuple
-		(setq tempTuple (car TupleList))
+		(let 
+			(
+				;current tuple
+				(tempTuple (car tupleList))
+				
+				;will contain the new list of parameters after iteration
+				(newMinMaxParamList nil)
+				
+			)
 		
-		;will contain the new list of parameters after iteration
-		(setq newMinMaxParamList nil)
-
 		;loop on all values of the current tuple
 		(loop while (not (null (car tempTuple)) ) do
+			
 			
 			;first min parameter
 			
@@ -188,10 +145,14 @@
 		
 		;next tuple
 		(setq tupleList (cdr tupleList))
+		
+		)
 	)
 	
 	;return the value
 	(setq minMaxParamList minMaxParamList)
+	
+	)
 	
 )
 
@@ -199,10 +160,15 @@
 ;creates a list of minmaxparam that includes two lists of minmaxparam 
 (defun getMinMaxParamValuesFrom2 (minMax1 minMax2)
 	
-	(setq tempMinMax1 minMax1)
-	(setq tempMinMax2 minMax2)
+	(let 
+		(
+			(tempMinMax1 minMax1)
+			(tempMinMax2 minMax2)
+
+			(newMinMax nil)
+		)
 	
-	(setq newMinMax nil)
+	
 	
 	;loop on tuples
 	(loop while (not (null (car tempMinMax1)) ) do
@@ -234,6 +200,7 @@
 	
 	(setq newMinMax (reverse newMinMax))
 	
+	)
 )
 
 
@@ -242,14 +209,19 @@
 ; i and j are integers and i <= j
 (defun appendListWithIntegers (l i j)
 	
-	(setq listOfLists nil)
-	
+	(let 
+		(
+			(listOfLists nil)
+		)
+		
 	;other elements
 	(loop for x from i to j do
 	        (push (append l (list x)) listOfLists)
 	)
 	
 	(setq listOfLists listOfLists)
+	
+	)
 	
 )
 
@@ -261,37 +233,49 @@
 
 (defun createLispTupleFromBounds (boundsList)
 	
-	;temporary list of tuples, initialized with unary tuples for the first component bounds
-	(setq tempTupleList (appendListWithIntegers nil (first (first boundsList)) (second (first boundsList))))
-	
-	;the first component is already done, so we skip it
-	(setq boundsList (rest boundsList))
+	(let 
+		(
+			;temporary list of tuples, initialized with unary tuples for the first component bounds
+			(tempTupleList (appendListWithIntegers nil (first (first boundsList)) (second (first boundsList))))
+
+			;the first component is already done, so we skip it
+			(boundsList (rest boundsList))
+		)
 	
 	(loop while (first boundsList) do
 		
-		;will be the list updated with the new component
-		(setq tempUpdatedTupleList nil)
+		(let 
+			(
+				;will be the list updated with the new component
+				(tempUpdatedTupleList nil)
+			)
 		
-		(loop while (first tempTupleList) do
+			(loop while (first tempTupleList) do
 		
-			;we create a list of tuples from current tuple and current bounds
-			(setq newListTuplesWithCurrentBoundsAdded (appendListWithIntegers (first tempTupleList) (first (first boundsList)) (second (first boundsList))))
+				(let 
+					(
+						;we create a list of tuples from current tuple and current bounds
+						(newListTuplesWithCurrentBoundsAdded (appendListWithIntegers (first tempTupleList) (first (first boundsList)) (second (first boundsList))))
+					)
+					;we add that tuple list to the new updated list
+					(setq tempUpdatedTupleList (append newListTuplesWithCurrentBoundsAdded tempUpdatedTupleList))
+				)
+				
+				;next tuple of the temporary list
+				(setq tempTupleList (rest tempTupleList))
+			)
 		
-			;we add that tuple list to the new updated list
-			(setq tempUpdatedTupleList (append newListTuplesWithCurrentBoundsAdded tempUpdatedTupleList))
+			;the tuple list is now the updated list
+			(setq tempTupleList tempUpdatedTupleList)
 		
-			;next tuple of the temporary list
-			(setq tempTupleList (rest tempTupleList))
+			;next component bounds
+			(setq boundsList (rest boundsList))
 		)
-		
-		;the tuple list is now the updated list
-		(setq tempTupleList tempUpdatedTupleList)
-		
-		;next component bounds
-		(setq boundsList (rest boundsList))
-	)
+	)	
 
 	(setq finalTupleList tempTupleList)
+	
+	)
 )
 
 ;create Gecode tuple uuid list from lisp tuple uuid list
@@ -301,9 +285,8 @@
 	(let (
 			(i 0)
 			(curT (get-internal-real-time))
+			(finalTupleUUIDList nil)
 		 )
-
-	(setq finalTupleUUIDList nil)
 	
 	(print "we will create a list of" )
 	(print (length lispTupleList))
@@ -320,11 +303,17 @@
 			)
 			)
 		
-		;a new tuple
-		(setq tempTuple (newTuple gm (first lispTupleList)))
+		(let 
+			(
+				;a new tuple
+				(tempTuple (newTuple gm (first lispTupleList)))
+			)
 		
-		;add the new uuid tuple to the list
-		(setq finalTupleUUIDList (append finalTupleUUIDList (list tempTuple)))
+		
+			;add the new uuid tuple to the list
+			(setq finalTupleUUIDList (append finalTupleUUIDList (list tempTuple)))
+		
+		)
 		
 		(setq lispTupleList (rest lispTupleList))
 		
@@ -342,24 +331,29 @@
 ;		the tuples all have the same arity
 (defun createGroundRelFromTupleUUIDList (gm tupleUUIDList)
 
-	;get the arity of the first tuple (equal to arity of the ground relation to be constructed)
-	(setq arity (getTupleArity gm (first tupleUUIDList)))
+	(let 
+		(
+			;get the arity of the first tuple (equal to arity of the ground relation to be constructed)
+			(arity (getTupleArity gm (first tupleUUIDList)))
 
-	;empty ground relation
-	(setq gr (newGRelation gm arity))
+			;empty ground relation
+			(gr (newGRelation gm arity))
+			
+		)
+
 		
-	;while there are tuple uuids in the list, we continue adding tuple	
-	(loop while (first tupleUUIDList) do
+		;while there are tuple uuids in the list, we continue adding tuple	
+		(loop while (first tupleUUIDList) do
 		
-		;add the tuple
-		(GRelation-AddTuple gm gr (first tupleUUIDList))
+			;add the tuple
+			(GRelation-AddTuple gm gr (first tupleUUIDList))
 		
-		(setq tupleUUIDList (cdr tupleUUIDList))
-	)
+			(setq tupleUUIDList (cdr tupleUUIDList))
+		)
 	
 	(setq toReturn gr)
 	
-	
+	)
 )
 
 
@@ -369,23 +363,21 @@
 ;minMaxList is a list of couples (min and max value of a given component)
 (defun createBoundedFullGroundRelation (gm minMaxList)
 	
-	;lisp tuple list
-	
-	(print "will create lisp tuples")
-	(setq lispTupleList (createLispTupleFromBounds minMaxList))
-	(print "lisp tuples : done")
-	
-	;tuple UUID list
-	(print "will create uuid tuples")
-	(setq tupleUUIDList (createTupleUUIDListFromLispTupleList gm lispTupleList))
-	(print "uuid tuples : done")
-	
-	;ground relation
-	(print "will create gr")
-	(setq gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
-	(print "gr : done")
-	
-	(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
+	(let
+		(
+			
+			;lisp tuple list	
+			(lispTupleList (createLispTupleFromBounds minMaxList))
+
+			;tuple UUID list
+			(tupleUUIDList (createTupleUUIDListFromLispTupleList gm lispTupleList))
+
+			;ground relation
+			(gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
+
+			(toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
+		)
+	)
 )
 
 
