@@ -377,6 +377,8 @@
 
 			(toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
 		)
+	
+		(setq toReturn toReturn)
 	)
 )
 

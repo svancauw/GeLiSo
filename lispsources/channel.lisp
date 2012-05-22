@@ -14,10 +14,14 @@
 
 (defun receiveMessage (tcp_str) 
 		
-		;list of read character
-		(setq charList nil)
-		;temp read character
-		(setq tempChar (stream:stream-read-char-no-hang tcp_str))
+		(let 
+			(
+				;list of read character
+				(charList nil)
+				;temp read character
+				(tempChar (stream:stream-read-char-no-hang tcp_str))
+			)
+		
 		
 		;loop to read all characters of a given message
 		(loop while t do
@@ -43,9 +47,15 @@
 			(setq tempChar (stream:stream-read-char-no-hang tcp_str))
 			
 		)
-		;we create a string message from the list of characters and return it
-		(setq messageToReturn (coerce (coerce charList 'vector) 'string))
-
+		
+		(let 
+			(
+				;we create a string message from the list of characters and return it
+				(messageToReturn (coerce (coerce charList 'vector) 'string))
+			)
+			(setq messageToReturn messageToReturn)
+		)
+		)
 )
 
 

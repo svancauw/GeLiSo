@@ -34,53 +34,73 @@
 	;send the (translated) message
 		
 	(sendMessage "newSpace" (getSender gm))
-			
-	;wait for the answer (the uuid)
-	(setq newSpaceUUID (receiveMessage (getReceiver gm)))
 	
-  	;return the uuid to be able to access the space
-	(setq newSpaceUUID newSpaceUUID)
+	(let
+		(
+			;wait for the answer (the uuid)
+			(newSpaceUUID (receiveMessage (getReceiver gm)))
+
+		)
+		
+		;return the uuid to be able to access the space
+		(setq newSpaceUUID newSpaceUUID)
+		
+	)		
 )
 
 ;create a new Tuple
 ;componentList is a list that contains the integer component of the tuple
 (defmethod newTuple ((gm GecodeManager) componentList)
 
-	;list of integer component as a string
-	(setq componentString (write-to-string (first componentList))) ;first element is put into
+	(let
+		(
+			;list of integer component as a string
+			(componentString (write-to-string (first componentList))) ;first element is put into
+
+			;fill the string with all the components
+			(componentList (rest componentList))
+		)
+	
+		(loop while (first componentList) do ;while the list is not empty
 		
-	;fill the string with all the components
-	(setq componentList (rest componentList))	
-	(loop while (first componentList) do ;while the list is not empty
+			;we add the next component
+			(setq componentString (concatenate 'string componentString " " (write-to-string (first componentList))))
 		
-		;we add the next component
-		(setq componentString (concatenate 'string componentString " " (write-to-string (first componentList))))
+			;next element	
+			(setq componentList (rest componentList))
+		)
+	
+		;send the message
 		
-		;next element	
-		(setq componentList (rest componentList))
+		(sendMessage (concatenate 'string "newTuple" " " componentString) (getSender gm))
+	
 	)
 	
-	;send the message
-		
-	(sendMessage (concatenate 'string "newTuple" " " componentString) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
+	(let
+			(
+				;wait for the answer
+				(ack (receiveMessage (getReceiver gm)))
+			)
 	
-  	;return the uuid to be able to access the tuple
-	(setq ack ack)
+  			;return the uuid to be able to access the tuple
+			(setq ack ack)
+	)
 )		
 
 (defmethod getTupleArity ((gm GecodeManager) tupleUUID)
 	
 	;send the message	
 	(sendMessage (concatenate 'string "getTupleArity" " " tupleUUID) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
+	
+	(let 
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
 	
   	;return the ack (as an integer number)
 	(setq ack (parse-integer ack))
+	)		
 )
 
 ;create a new (empty) ground relation
@@ -90,12 +110,16 @@
 	;send the message
 		
 	(sendMessage (concatenate 'string "newGRelation" " " (write-to-string arity)) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
 	
-  	;return the uuid to be able to access the ground relation
-	(setq ack ack)
+	(let
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+		
+	  	;return the uuid to be able to access the ground relation
+		(setq ack ack)	
+	)
 )
 
 ;add the tuple tu to the ground relation gr
@@ -105,12 +129,15 @@
 	;send the message
 		
 	(sendMessage (concatenate 'string "GRelation-AddTuple" " " gr " " tu) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
 	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )	
 
 ;create a new CPRel variable with glb and lub as domain bounds
@@ -118,12 +145,15 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "newCPRelVar" " " sp " " glb " " lub) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
 	
-  	;return the uuid to be able to access the cprelvar	
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the uuid to be able to access the cprelvar	
+		(setq ack ack)	
+	)
 )
 
 (defmethod branch ((gm GecodeManager) sp cprelvar)
@@ -131,11 +161,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "branch" " " sp " " cprelvar) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )	
 
 ;create a search engine
@@ -148,12 +181,15 @@
 	;send the (translated) message
 			
 	(sendMessage (concatenate 'string "newSearchEngine" " " sp " " (write-to-string strategyID)) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
 	
-  	;return the ack (actual solution)
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 ;find the next solution for a given space sp and search engine se
@@ -164,11 +200,14 @@
 		
 	(sendMessage (concatenate 'string "nextSolution" " " sp " " se) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack (actual solution)
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack (actual solution)
+		(setq ack ack)	
+	)
 )
 
 (defmethod quitGecode ((gm GecodeManager))
@@ -178,11 +217,14 @@
 	(print "We will quit")	
 	(sendMessage "quitGecode" (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack (actual solution)
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 ;get a relation variable on a given space (for instance solution space) as a list of list (ie a list of tuples)
@@ -191,44 +233,55 @@
 	;send the (translated) message
 		
 	(sendMessage (concatenate 'string "getVarInSpace" " " sp " " cprelvar) (getSender gm))
-			
-	;wait for the answer (the actual list of list but as a string)
-	(setq ack (receiveMessage (getReceiver gm)))
 	
 	
-	
-	;transform the string in a list of list (actually a list of tuple, ie the relation)
-	
-	(setq splittedRel (split-sequence "-" ack :coalesce-separators t))
-	
-	(setq relAsList nil);list of list to be returned
+	(let
+		(
+			;wait for the answer (the actual list of list but as a string)
+			(ack (receiveMessage (getReceiver gm)))
+
+
+
+			;transform the string in a list of list (actually a list of tuple, ie the relation)
+
+			(splittedRel (split-sequence "-" ack :coalesce-separators t))
+
+			(relAsList nil);list of list to be returned
+		)		
 	
 	(loop while (first splittedRel) do ;while the list is not empty
 		
-		(setq tempTuple nil);the current tuple
+		(let 
+			(
+				(tempTuple nil);the current tuple
+
+				;tuple splitted as a list of integer
+				(splittedTuple (split-sequence "[,]" (first splittedRel) :coalesce-separators t))
+			)
 		
-		;tuple splitted as a list of integer
-		(setq splittedTuple (split-sequence "[,]" (first splittedRel) :coalesce-separators t))
 		
-		;fill the list with the element of the list of string		
-		(loop while (first splittedTuple) do
+			;fill the list with the element of the list of string		
+			(loop while (first splittedTuple) do
 			
-			;we add the next element
-			(setq tempTuple (append (list (parse-integer (first splittedTuple))) tempTuple))
+				;we add the next element
+				(setq tempTuple (append (list (parse-integer (first splittedTuple))) tempTuple))
 			
-			;next element	
-			(setq splittedTuple (rest splittedTuple))
-		)	
+				;next element	
+				(setq splittedTuple (rest splittedTuple))
+			)
 		
-		;we add the next tuple
-		(setq relAsList (append (list tempTuple) relAsList))
+			;we add the next tuple
+			(setq relAsList (append (list tempTuple) relAsList))
 		
+		)
 		;next element	
 		(setq splittedRel (rest splittedRel))
 	)
 	
   	;return the relation as list of list
 	(setq relAsList relAsList)
+	
+	)
 )
 
 
@@ -237,11 +290,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint equal" " " sp " " relA " " relB) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod complementConstraint ((gm GecodeManager) sp relA relB)
@@ -249,11 +305,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint complement" " " sp " " relA " " relB) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod intersectConstraint ((gm GecodeManager) sp relA relB relC)
@@ -261,11 +320,14 @@
 	;send the message
 	(sendMessage (concatenate 'string "Constraint intersect" " " sp " " relA " " relB " " relC) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod unionConstraint ((gm GecodeManager) sp relA relB relC)
@@ -273,11 +335,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint union" " " sp " " relA " " relB " " relC) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod subsetConstraint ((gm GecodeManager) sp relA relB)
@@ -285,11 +350,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint subset" " " sp " " relA " " relB) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod disjointConstraint ((gm GecodeManager) sp relA relB)
@@ -297,11 +365,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint disjoint" " " sp " " relA " " relB) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod impliesConstraint ((gm GecodeManager) sp relA relB relC)
@@ -309,37 +380,47 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint implies" " " sp " " relA " " relB " " relC) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 ;permDesc is a list of list of integers, where the sublists are pairs of component number to be permuted.
 (defmethod permutationConstraint ((gm GecodeManager) sp relA relB permDesc)
 	
-	;string permDesc
-	(setq strPD "")
-
-	;fill the string permDes
-	(loop while (first permDesc) do
+	(let
+		(
+			;string permDesc
+			(strPD "")
+		)
+	
+		;fill the string permDes
+		(loop while (first permDesc) do
 		
-		;add the permuation as a string
-		(setq strPD (concatenate 'string strPD " " (write-to-string (first (first permDesc))) "_" (write-to-string (second (first permDesc)))))
+			;add the permuation as a string
+			(setq strPD (concatenate 'string strPD " " (write-to-string (first (first permDesc))) "_" (write-to-string (second (first permDesc)))))
 		
-		;next permutation
-		(setq permDesc (cdr permDesc))
+			;next permutation
+			(setq permDesc (cdr permDesc))
+		)
+	
+		;send the message	
+		(sendMessage (concatenate 'string "Constraint permutation" " " sp " " relA " " relB " " strPD) (getSender gm))
 	)
 	
-	;send the message	
-	(sendMessage (concatenate 'string "Constraint permutation" " " sp " " relA " " relB " " strPD) (getSender gm))
-			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod projectionConstraint ((gm GecodeManager) sp p relA relB)
@@ -349,11 +430,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) " " relA " " relB) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod joinConstraint ((gm GecodeManager) sp relA j relB relC)
@@ -361,11 +445,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint join" " " sp " " relA " " (write-to-string j) " " relB " " relC) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod followConstraint ((gm GecodeManager) sp relA f relB relC)
@@ -375,11 +462,14 @@
 	
 	(print (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod divideConstraint ((gm GecodeManager) sp relA d relB relC)
@@ -387,11 +477,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint divide" " " sp " " relA " " (write-to-string d) " " relB " " relC) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod includeConstraint ((gm GecodeManager) sp relA gr)
@@ -399,11 +492,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint include" " " sp " " relA " " gr) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod excludeConstraint ((gm GecodeManager) sp relA gr)
@@ -411,11 +507,14 @@
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint exclude" " " sp " " relA " " gr) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod printSpace ((gm GecodeManager) sp)
@@ -423,13 +522,17 @@
 	;send the message	
 	(sendMessage (concatenate 'string "printSpace" " " sp) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-	(print ack)
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+		
+		(print ack)
+		
+	  	;return the ack
+		(setq ack ack)	
+	)
 )
 
 (defmethod debugSpace ((gm GecodeManager) sp)
@@ -437,11 +540,15 @@
 	;send the message	
 	(sendMessage (concatenate 'string "debugSpace" " " sp) (getSender gm))
 			
-	;wait for the answer
-	(setq ack (receiveMessage (getReceiver gm)))
-	
-	(print ack)
-	
-  	;return the ack
-	(setq ack ack)
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+		
+		(print ack)
+		
+	  	;return the ack
+		(setq ack ack)	
+	)	
 )
