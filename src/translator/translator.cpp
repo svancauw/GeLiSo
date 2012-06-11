@@ -324,6 +324,8 @@ string applyMessage(variableMap& varmap, string message)
 		//get the glb (the ground relation, equal to lub in a solution space)
 		GRelation solgr = solcprelvar.glb();
 		
+		cout << "solgr : " << endl << solgr << endl;
+		
 		//get a vector of vector representing the ground relation
 		//empty the global stream
 		globalvisitorstream.clear();
@@ -565,18 +567,20 @@ string applyMessage(variableMap& varmap, string message)
 			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
 			
 			//create the permutation descriptor
-			PermDescriptor* d = new PermDescriptor();//TODO : this memory must be freed at some point !
+			//PermDescriptor* d = new PermDescriptor();//TODO : this memory must be freed at some point !
+			std::vector<std::pair<int,int> > desc;
 			
 			//fill the permutation descriptor
 			while(messageTokens = strtok (NULL, " "))
 			{
 				
 				//0 and 2 are indexes in messageTokens for the components to permute
-				d->permute(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10));
+				//d->permute(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10));
+				desc.push_back(std::make_pair(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10)));
 				
 			}
 			
-			permutation(*sp,*relA,*relB,*d);
+			permutation(*sp,*relA,*relB,desc);
 			
 		}
 		
@@ -603,11 +607,7 @@ string applyMessage(variableMap& varmap, string message)
 			ssrelB << messageTokens;
 			ssrelB >> relBUUID;
 			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
-			
-			cout << "p : " << p << endl;
-			cout << "relA.arity : " << relA->arity() << endl;
-			cout << "relB.arity : " << relB->arity() << endl;
-			
+						
 			projection(*sp,p,*relA,*relB);
 			
 		}
@@ -641,12 +641,6 @@ string applyMessage(variableMap& varmap, string message)
 			ssrelC << messageTokens;
 			ssrelC >> relCUUID;
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
-			
-			
-			cerr << "A.arity() : " << relA->arity() << endl;
-			cerr << "B.arity() : " << relB->arity() << endl;
-			cerr << "C.arity() : " << relC->arity() << endl;
-			cerr << "j : " << j << endl;
 			
 			join(*sp,*relA,j,*relB,*relC);
 			
@@ -684,40 +678,6 @@ string applyMessage(variableMap& varmap, string message)
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
 			
 			follow(*sp,*relA,f,*relB,*relC);
-			
-		}
-		
-		if (!strcmp(constr, "divide"))
-		{
-			//get the space (first parameter)
-			messageTokens = strtok (NULL, " ");		
-			sssp << messageTokens;
-			sssp >> spUUID;
-			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
-			
-			//get the relA (second parameter)
-			messageTokens = strtok (NULL, " ");//next token
-			ssrelA << messageTokens;
-			ssrelA >> relAUUID;
-			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
-			
-			//get the integer (third parameter)
-			messageTokens = strtok (NULL, " ");//next token
-			int d = strtol(messageTokens,NULL,10);
-			
-			//get the relB (fourth parameter)
-			messageTokens = strtok (NULL, " ");//next token
-			ssrelB << messageTokens;
-			ssrelB >> relBUUID;
-			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
-			
-			//get the relC (fifth parameter)
-			messageTokens = strtok (NULL, " ");//next token
-			ssrelC << messageTokens;
-			ssrelC >> relCUUID;
-			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
-			
-			divide(*sp,*relA,d,*relB,*relC);
 			
 		}
 		

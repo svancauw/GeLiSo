@@ -66,10 +66,14 @@
 			(tupleList nil)
 
 			;temporary sublists
-			(tempPitchList pitchList)
-			(tempOnsetList onsetList)
-			(tempDurationList durationList)
+			(tempPitchList nil)
+			(tempOnsetList nil)
+			(tempDurationList nil)
 		)
+		
+		(setq tempPitchList pitchList)
+		(setq tempOnsetList onsetList)
+		(setq tempDurationList durationList)
 	
 	(loop while (not (null (car tempPitchList)) ) do
 		
@@ -95,8 +99,10 @@
 			
 			;initial list of parameters (minPitch maxPitch minOnset maxOnset minDuration maxDuration)
 			;it will be updated afterwards
-			(minMaxParamList (list maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal))
+			(minMaxParamList nil)
 		)
+		
+		(setq minMaxParamList (list maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal maxPossibleVal minPossibleVal))
 	
 	;loop on tuple
 	(loop while (first tupleList) do
@@ -283,25 +289,10 @@
 (defun createTupleUUIDListFromLispTupleList (gm lispTupleList)
 
 	(let (
-			(i 0)
-			(curT (get-internal-real-time))
 			(finalTupleUUIDList nil)
 		 )
-	
-	(print "we will create a list of" )
-	(print (length lispTupleList))
-	(print "tuples" )
-	
-	(loop while (first lispTupleList) do
 		
-		(if (= (mod i 100) 0)
-			(progn
-				(print i)
-				(print (- (get-internal-real-time) curT))
-				(print "seconds")
-				(setq curT (get-internal-real-time))
-			)
-			)
+	(loop while (first lispTupleList) do
 		
 		(let 
 			(
@@ -316,8 +307,7 @@
 		)
 		
 		(setq lispTupleList (rest lispTupleList))
-		
-		(setq i (+ i 1))
+	
 	)
 	
 	(setq finalTupleUUIDList finalTupleUUIDList)
@@ -337,10 +327,11 @@
 			(arity (getTupleArity gm (first tupleUUIDList)))
 
 			;empty ground relation
-			(gr (newGRelation gm arity))
+			(gr nil)
 			
 		)
-
+		
+		(setq gr (newGRelation gm arity))
 		
 		;while there are tuple uuids in the list, we continue adding tuple	
 		(loop while (first tupleUUIDList) do
@@ -370,13 +361,19 @@
 			(lispTupleList (createLispTupleFromBounds minMaxList))
 
 			;tuple UUID list
-			(tupleUUIDList (createTupleUUIDListFromLispTupleList gm lispTupleList))
+			(tupleUUIDList nil)
 
 			;ground relation
-			(gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
+			(gr nil)
 
-			(toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
+			(toReturn nil)
 		)
+		
+		(setq tupleUUIDList (createTupleUUIDListFromLispTupleList gm lispTupleList))
+
+		(setq gr (createGroundRelFromTupleUUIDList gm tupleUUIDList))
+
+		(setq toReturn (concatenate 'list (list gr) (list tupleUUIDList)))
 	
 		(setq toReturn toReturn)
 	)

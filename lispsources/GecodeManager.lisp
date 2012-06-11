@@ -240,14 +240,13 @@
 			;wait for the answer (the actual list of list but as a string)
 			(ack (receiveMessage (getReceiver gm)))
 
-
-
-			;transform the string in a list of list (actually a list of tuple, ie the relation)
-
-			(splittedRel (split-sequence "-" ack :coalesce-separators t))
+			(splittedRel nil)
 
 			(relAsList nil);list of list to be returned
 		)		
+	
+		;transform the string in a list of list (actually a list of tuple, ie the relation)
+		(setq splittedRel (split-sequence "-" ack :coalesce-separators t))
 	
 	(loop while (first splittedRel) do ;while the list is not empty
 		
@@ -425,8 +424,6 @@
 
 (defmethod projectionConstraint ((gm GecodeManager) sp p relA relB)
 	
-	(print (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) relA relB))
-	
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint projection" " " sp " " (write-to-string p) " " relA " " relB) (getSender gm))
 			
@@ -459,23 +456,6 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC) (getSender gm))
-	
-	(print (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC))
-			
-	(let		
-		(
-			;wait for the answer
-			(ack (receiveMessage (getReceiver gm)))
-		)
-	  	;return the ack
-		(setq ack ack)	
-	)
-)
-
-(defmethod divideConstraint ((gm GecodeManager) sp relA d relB relC)
-	
-	;send the message	
-	(sendMessage (concatenate 'string "Constraint divide" " " sp " " relA " " (write-to-string d) " " relB " " relC) (getSender gm))
 			
 	(let		
 		(
