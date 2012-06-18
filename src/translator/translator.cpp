@@ -137,10 +137,86 @@ string applyMessage(variableMap& varmap, string message)
 		//add the tuple
 		gr->add(*tu);
 		
-		//the UUID as a string is the ack
 		ack = boost::lexical_cast<std::string>("The tuple has been added to the ground relation");
 		
 	}	
+	
+	
+	//create the product of two ground relations and place the corresponding uuid in the ack
+	if (!strcmp(functionToApply, "GRelation-Times"))
+	{
+		//string streams used to get the uuids
+		stringstream ssgr1;
+		stringstream ssgr2;
+		
+		//get the first ground relation (first parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		boost::uuids::uuid gr1UUID;
+		ssgr1 << messageTokens;
+		ssgr1 >> gr1UUID;
+		GRelation* gr1 = (GRelation*) varmap[gr1UUID];
+		
+		//get the second ground relation (second parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		boost::uuids::uuid gr2UUID;
+		ssgr2 << messageTokens;
+		ssgr2 >> gr2UUID;
+		GRelation* gr2 = (GRelation*) varmap[gr2UUID];
+		
+		//create the product ground relation
+		//we create the new uuid for the new ground relation
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
+		
+		//we create the new GRelation
+		GRelation* prodGRelation = new GRelation(gr1->times(*gr2));
+				
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = prodGRelation;
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>(*newUUID);
+		
+	}
+	
+	
+	//create the product of two ground relations and place the corresponding uuid in the ack
+	if (!strcmp(functionToApply, "GRelation-Permute"))
+	{
+		//string stream used to get the uuid
+		stringstream ssgr;
+		
+		//get the first ground relation (first parameter)
+		messageTokens = strtok (NULL, " ");//next token
+		boost::uuids::uuid grUUID;
+		ssgr << messageTokens;
+		ssgr >> grUUID;
+		GRelation* gr1 = (GRelation*) varmap[grUUID];
+		
+		//create the permutation descriptor
+		std::vector<std::pair<int,int> > desc;
+		
+		//fill the permutation descriptor
+		while(messageTokens = strtok (NULL, " "))
+		{
+			//0 and 2 are indexes in messageTokens for the components to permute
+			desc.push_back(std::make_pair(strtol(&(messageTokens[0]),NULL,10),strtol(&(messageTokens[2]),NULL,10)));
+		}
+		
+		//create the product ground relation
+		//we create the new uuid for the new ground relation
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
+		
+		//we create the new GRelation
+		GRelation* permutedGRelation = new GRelation(gr1->permute(desc));
+				
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = permutedGRelation;
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>(*newUUID);
+		
+	}
+	
 	
 	if (!strcmp(functionToApply, "newCPRelVar"))
 	{

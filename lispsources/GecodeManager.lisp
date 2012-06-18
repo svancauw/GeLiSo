@@ -138,7 +138,61 @@
 	  	;return the ack
 		(setq ack ack)	
 	)
-)	
+)
+
+
+;return a new ground relation from the cross product of 2 relations
+;gr1 and gr2 are strings representing the uuid of the objects on the C++ side
+(defmethod GRelation-Times ((gm GecodeManager) gr1 gr2)
+	
+	;send the message
+		
+	(sendMessage (concatenate 'string "GRelation-Times" " " gr1 " " gr2) (getSender gm))
+	
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
+)
+
+;return a new ground relation, equal to the permutation of gr, according to the permutation permDesc
+;gr is a string representing the uuid of the object on the C++ side
+(defmethod GRelation-Permute ((gm GecodeManager) gr permDesc)
+	
+	(let
+		(
+			;string permDesc
+			(strPD "")
+		)
+	
+		;fill the string permDes
+		(loop while (first permDesc) do
+		
+			;add the permuation as a string
+			(setq strPD (concatenate 'string strPD " " (write-to-string (first (first permDesc))) "_" (write-to-string (second (first permDesc)))))
+		
+			;next permutation
+			(setq permDesc (cdr permDesc))
+		)
+	
+		;send the message	
+		(sendMessage (concatenate 'string "GRelation-Permute" " " gr " " strPD) (getSender gm))
+	)
+	
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
+)
+	
 
 ;create a new CPRel variable with glb and lub as domain bounds
 (defmethod newCPRelVar ((gm GecodeManager) sp glb lub)
