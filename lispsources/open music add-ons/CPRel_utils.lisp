@@ -342,7 +342,7 @@
 			(setq tupleUUIDList (cdr tupleUUIDList))
 		)
 	
-	(setq toReturn gr)
+	(setq gr gr)
 	
 	)
 )
