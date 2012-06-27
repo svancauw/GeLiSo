@@ -1,4 +1,4 @@
-; OM File Header - Saved 2012/06/26 18:46:03
+; OM File Header - Saved 2012/06/27 11:38:19
 ; (6.050003 :patc (om-make-point 10 10) (om-make-point 0 -778) (om-make-point 1280 752) "" 183 0 "2012/06/13 23:42:26" "2012/06/21 18:43:53")
 ; End File Header
 (in-package :om)(load-lib-for (quote nil))(setf *om-current-persistent* (om-load-patch1 "fractal music 2" (quote ((om-load-boxcall (quote bastype) "string 4" (quote string) (quote nil) (om-make-point 384 478) (om-make-point 840 30) "We could try to enforce this constraint only on subparts of the score, using the join constraint to get them (e.g. some given onset, or duration)" "\"We could try to enforce this constraint only on subparts of the score, using the join constraint to get them (e.g. some given onset, or duration)\"" nil) (om-load-boxcall (quote bastype) "string 3" (quote string) (quote nil) (om-make-point 403 340) (om-make-point 838 43) "The constraint actually allows to enforce that for all accessible things from the Score relation and using the Transform relation, 
