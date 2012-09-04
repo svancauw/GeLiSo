@@ -113,6 +113,29 @@ string applyMessage(variableMap& varmap, string message)
 		
 	}
 	
+	//create a full ground relation
+	if (!strcmp(functionToApply, "newFullGRelation"))
+	{
+				
+		//we create the new uuid for the new variable
+		newUUID = new boost::uuids::uuid(boost::uuids::random_generator()());
+		
+		//get the arity of the new ground relation
+		messageTokens = strtok (NULL, " ");
+		
+		//we create the new (empty) GRelation
+		GRelation* newGRelation = new GRelation(create_full(strtol(messageTokens,NULL,10)));
+		
+		//we add the variable and its uuid in the map
+		varmap[*newUUID] = newGRelation;
+		
+		//the UUID as a string is the ack
+		ack = boost::lexical_cast<std::string>(*newUUID);
+		
+		
+	}	
+	
+	
 	//add a tuple to a ground relation
 	if (!strcmp(functionToApply, "GRelation-AddTuple"))
 	{
@@ -754,6 +777,76 @@ string applyMessage(variableMap& varmap, string message)
 			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
 			
 			follow(*sp,*relA,f,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "confluentCompose"))
+		{
+			
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the integer (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			int f = strtol(messageTokens,NULL,10);
+			
+			//get the relB (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fifth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			restrFollowAll(*sp,*relA,f,*relB,*relC);
+			
+		}
+		
+		if (!strcmp(constr, "confluentJoin"))
+		{
+			
+			//get the space (first parameter)
+			messageTokens = strtok (NULL, " ");		
+			sssp << messageTokens;
+			sssp >> spUUID;
+			GeLiSoSpace* sp = (GeLiSoSpace*) varmap[spUUID];
+			
+			//get the relA (second parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelA << messageTokens;
+			ssrelA >> relAUUID;
+			GeLiSoCPRelVar* relA = (GeLiSoCPRelVar*) varmap[relAUUID];
+			
+			//get the integer (third parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			int f = strtol(messageTokens,NULL,10);
+			
+			//get the relB (fourth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelB << messageTokens;
+			ssrelB >> relBUUID;
+			GeLiSoCPRelVar* relB = (GeLiSoCPRelVar*) varmap[relBUUID];
+			
+			//get the relC (fifth parameter)
+			messageTokens = strtok (NULL, " ");//next token
+			ssrelC << messageTokens;
+			ssrelC >> relCUUID;
+			GeLiSoCPRelVar* relC = (GeLiSoCPRelVar*) varmap[relCUUID];
+			
+			joinAll(*sp,*relA,f,*relB,*relC);
 			
 		}
 		

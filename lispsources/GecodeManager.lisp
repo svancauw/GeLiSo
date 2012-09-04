@@ -122,6 +122,23 @@
 	)
 )
 
+;return a new full ground relation of arity arity
+;arity is an integer specifying the arity of the new (full) ground relation
+(defmethod newFullGRelation ((gm GecodeManager) arity)
+	
+	;send the message
+	(sendMessage (concatenate 'string "newFullGRelation" " " (write-to-string arity)) (getSender gm))
+	
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
+)
+
 ;add the tuple tu to the ground relation gr
 ;gr and tu are strings representing the uuid of the objects on the C++ side
 (defmethod GRelation-AddTuple ((gm GecodeManager) gr tu)
@@ -510,6 +527,36 @@
 	
 	;send the message	
 	(sendMessage (concatenate 'string "Constraint follow" " " sp " " relA " " (write-to-string f) " " relB " " relC) (getSender gm))
+			
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
+)
+
+(defmethod confluentComposeConstraint ((gm GecodeManager) sp relA f relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint confluentCompose" " " sp " " relA " " (write-to-string f) " " relB " " relC) (getSender gm))
+			
+	(let		
+		(
+			;wait for the answer
+			(ack (receiveMessage (getReceiver gm)))
+		)
+	  	;return the ack
+		(setq ack ack)	
+	)
+)
+
+(defmethod confluentJoinConstraint ((gm GecodeManager) sp relA f relB relC)
+	
+	;send the message	
+	(sendMessage (concatenate 'string "Constraint confluentJoin" " " sp " " relA " " (write-to-string f) " " relB " " relC) (getSender gm))
 			
 	(let		
 		(
