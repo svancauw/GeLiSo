@@ -16,9 +16,9 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-support")
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
-#TODO : a changer !!!
-set(CMAKE_CXX_COMPILER "/Users/saschavancauwelaert/gcc_461/bin/g++")
-set(CMAKE_C_COMPILER "/Users/saschavancauwelaert/gcc_461/bin/gcc")
+#TODO : remove those lines
+#set(CMAKE_CXX_COMPILER "/Users/saschavancauwelaert/gcc_461/bin/g++")
+#set(CMAKE_C_COMPILER "/Users/saschavancauwelaert/gcc_461/bin/gcc")
 
 if(CMAKE_COMPILER_IS_GNUCXX)
 	 message(STATUS "The compiler is GCC")
@@ -75,15 +75,16 @@ list(APPEND CPREL_LIBS ${NEEDED_CPREL_LIBS})
 ##########################################################################
 ## Find Boost
 #include(FindBoost)
-#set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost 1.44 REQUIRED System Regex date_time Thread)
+set(Boost_USE_STATIC_LIBS ON)
+#find_package(Boost 1.44 REQUIRED System Regex date_time Thread)
+find_package(Boost 1.51.0 REQUIRED System Regex date_time Thread)
 message(STATUS "Boost path: ${Boost_INCLUDE_DIRS}")
 message(
 	STATUS
 	"${Boost_LIBRARIES}"
 )
 
-link_directories ( ${Boost_LIBRARY_DIRS} )
+link_directories(${Boost_LIBRARY_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 
