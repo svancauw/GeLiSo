@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>GeLiSo - Gecode in common Lisp using Sockets by svancauw</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">GeLiSo - Gecode in common Lisp using Sockets</h1>
+        <p class="header"></p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/svancauw/GeLiSo/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/svancauw/GeLiSo/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/svancauw/GeLiSo">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/svancauw">svancauw</a></p>
+
+
+      </header>
+      <section>
+        <h3>Introduction</h3>
+
+<p>This project allows working with the constraint programming C++ library Gecode inside the Common Lisp language (especially the Lispworks implementation). For this purpose, sockets are used to communicate between a Lisp and a C++ application.</p>
+
+<h3>Current status</h3>
+
+<p>Currently, it is only possible to use the relation variables (and associated constraints). (see <a href="http://ggutierrez.github.com/cprelmaster/index.html">http://ggutierrez.github.com/cprelmaster/index.html</a>)</p>
+
+<h3>Download</h3>
+
+<p>To get the latest version, please use git as follows (<code>$</code> represents here the prompt of your terminal):</p>
+
+<pre><code>$ git clone https://github.com/svancauw/GeLiSo.git
+</code></pre>
+
+<h3>Installation</h3>
+
+<p>Installation requires first the installation of the CPRel package. Please refer to the associated installation instructions : <a href="http://ggutierrez.github.com/cprelmaster/install.html">http://ggutierrez.github.com/cprelmaster/install.html</a></p>
+
+<p>After having successfully installed the CPRel package, follow the instructions below. <code>/Path/To/GeLiSo</code> is here the path of the cloned directory.</p>
+
+<ol>
+<li>
+<p>Create a directory where GeLiSo will be built (here <code>/Path/To/Build-GeLiSo/</code>). It is advised that this directory is not a subdirectory of <code>/Path/To/GeLiSo</code>.</p>
+
+<pre><code>$ mkdir /Path/To/Build-GeLiSo/
+$ cd /Path/To/Build-GeLiSo/
+</code></pre>
+</li>
+<li>
+<p>Configure and build. Depending on where the different dependencies (Gecode, CPRel, gcc, boost) are installed on your machine, you may have to add some cmake options to get a correct configuration. In the code below, <code>(options)</code> represents the different options you have to pass.</p>
+
+<pre><code>$ cmake (options) /Path/To/GeLiSo/
+$ make
+</code></pre>
+
+<p>The options that could have to be used are the following :</p>
+</li>
+</ol><ul>
+<li>-DCMAKE_C_COMPILER=/Path/To/Gcc/Compiler/gcc </li>
+<li>-DCMAKE_CXX_COMPILER=/Path/To/G++/Compiler/g++ </li>
+<li>-DCMAKE_PREFIX_PATH="/Path/To/Gecode/Installation/;/Path/To/CPRel/Installation/" </li>
+<li>-DBOOST_ROOT=/Path/To/Boost/Installation/</li>
+<li>-DCMAKE_CXX_FLAGS="-I/Path/To/Gecode/Installation/include -I/Path/To/CPRel/Installation/include/ -L/Path/To/Gecode/Installation/lib/"</li>
+<li>-DCMAKE_C_FLAGS="-I/Path/To/Gecode/Installation/include -I/Path/To/CPRel/Installation/include/ -L/Path/To/Gecode/Installation/lib/"</li>
+</ul><p>where <code>/Path/To/Gcc/Compiler/</code>, <code>/Path/To/G++/Compiler/</code>, <code>/Path/To/Gecode/Installation/</code>, <code>/Path/To/CPRel/Installation/</code> and <code>/Path/To/Boost/Installation/</code> represents respectively the (full) path where gcc, g++, Gecode, CPRel and Boost have been installed.</p>
+
+<h3>Quick start</h3>
+
+<ol>
+<li>
+<p>Currently, before each execution, the C++ application must be launched. To do so, use the terminal:</p>
+
+<pre><code>$ /Path/To/Build-GeLiSo/bin/gelisoexec
+</code></pre>
+</li>
+<li>
+<p>Then, from a Common Lisp interpreter (Lispworks for instance, as it is the only one that has been tested (<a href="http://www.lispworks.com/)">http://www.lispworks.com/)</a>), load the file <code>load.lisp</code> of the<br>
+/Path/To/GeLiSo/lispsources/ directory :</p>
+
+<pre><code>$ (load "/Path/To/GeLiSo/lispsources/load.lisp")
+</code></pre>
+</li>
+</ol><p>That's it ! Now Gecode can be used from a Common Lisp interpreter.</p>
+
+<h3>Example</h3>
+
+<p>Here is a small example to test GeLiSo. Notice we do not use local variables but it should be done where it can be.</p>
+
+<ol>
+<li>
+<p>Establish the connection with the C++ application and create a GecodeManager object. This object is used to send the messages to the application.</p>
+
+<pre><code>(setq endpoint_receive '("127.0.0.1" 2222))
+(setq endpoint_send '("127.0.0.1" 3333))
+;create the gecode manager and connect the sockets
+(setq gm (make-instance 'GecodeManager :sender (createSocket (first endpoint_send) (second endpoint_send)) :receiver (createSocket (first endpoint_receive) (second endpoint_receive))))
+</code></pre>
+</li>
+<li>
+<p>Create a Gecode space sp</p>
+
+<pre><code>(setq sp (newSpace gm))
+</code></pre>
+</li>
+<li>
+<p>Declare the decision variables varA and varB.</p>
+
+<pre><code>;;varA
+;empty ternary relation value (ground relation) grA
+(setq grA (newGRelation gm 3))
+;add the tuple &lt;1 2 3&gt; to grA
+(GRelation-AddTuple gm grA (newTuple gm '(1 2 3)))
+;declare the varA decision variable     
+(setq varA (newCPRelVar gm sp grA grA))
+;;varB
+;empty ternary relation value (ground relation) glbB
+(setq glbB (newGRelation gm 3))
+;empty ternary relation value (ground relation) lubB
+(setq lubB (newGRelation gm 3))
+;add the tuples &lt;1 2 3&gt; and &lt;4 5 6&gt; to lubB
+(GRelation-AddTuple gm lubB (newTuple gm '(1 2 3)))
+(GRelation-AddTuple gm lubB (newTuple gm '(4 5 6)))
+;declare the varA decision variable     
+(setq varB (newCPRelVar gm sp glbB lubB))       
+</code></pre>
+</li>
+<li>
+<p>It is possible to print the Gecode Space sp</p>
+
+<pre><code>(printSpace gm sp)
+</code></pre>
+</li>
+<li>
+<p>Impose a constraint on the decision variables. For instance, an equality constraint :</p>
+
+<pre><code>(equalConstraint gm sp varA varB)       
+</code></pre>
+</li>
+<li>
+<p>Add a brancher on decision variable varB</p>
+
+<pre><code>(branch gm sp varB)
+</code></pre>
+</li>
+<li>
+<p>Define a Gecode search engine. The argument 0 means Depth-First Search.</p>
+
+<pre><code>(setq se (newSearchEngine gm sp 0))
+</code></pre>
+</li>
+<li>
+<p>Get the next solution space.</p>
+
+<pre><code>(setq sol1 (nextSolution gm sp se))
+</code></pre>
+</li>
+<li>
+<p>If there is a solution space, print it.</p>
+
+<pre><code>(if (string/= sol1 "0")
+(progn 
+    (printSpace gm sol1)    
+)
+)
+</code></pre>
+</li>
+<li>
+<p>Close the connection to the C++ application. </p>
+
+<pre><code>(quitGecode gm)
+</code></pre>
+</li>
+</ol><p>For more information, please consult the file <code>GecodeManager.lisp</code> in the <code>/Path/To/GeLiSo/lispsources</code> directory.</p>
+
+<p>Some tests examples can be found in the file <code>test.lisp</code> in the <code>/Path/To/GeLiSo/lispsources/tests/</code> directory.</p>
+
+<h3>Contact</h3>
+
+<p>Any comments or questions are welcome. You can either use the development site (<a href="https://github.com/svancauw/GeLiSo">https://github.com/svancauw/GeLiSo</a>) or 
+the mail address sascha.vancauwelaert <strong>at</strong> gmail.com .</p>
+
+<h3>Authors</h3>
+
+<ul>
+<li>Sascha Van Cauwelaert (<a href="https://github.com/svancauw" class="user-mention">@svancauw</a>) </li>
+<li>Gustavo Gutiérrez (<a href="https://github.com/ggutierrez" class="user-mention">@ggutierrez</a>)</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
