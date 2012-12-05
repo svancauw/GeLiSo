@@ -1,4 +1,0 @@
-; OM File Header - Saved 2012/09/04 14:48:54
-; (6.050003 :patc (om-make-point 10 10) (om-make-point 141 -750) (om-make-point 500 400) "" 183 0 "2012/06/14 14:49:30" "2012/06/14 14:52:44")
-; End File Header
-(in-package :om)(load-lib-for (quote nil))(setf *om-current-persistent* (om-load-patch1 "markov" (quote ((om-load-boxcall (quote bastype) "string" (quote string) (quote nil) (om-make-point 16 77) (om-make-point 570 30) "Each s_i is a joined part of a relation (e.g. on each onset). we can then use compose constraint" "\"Each s_i is a joined part of a relation (e.g. on each onset). we can then use compose constraint\"" nil))) (quote nil) nil 6.050003))
